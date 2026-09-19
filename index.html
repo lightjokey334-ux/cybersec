@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Securitate informațională — Recapitulare &amp; Test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EEF0F2;
+    --panel: #FFFFFF;
+    --border: #D8DCE2;
+    --ink: #1B2430;
+    --muted: #5B6472;
+    --accent: #2F6F76;
+    --accent-soft: #E4EEEE;
+    --danger: #B4432F;
+    --danger-soft: #F7E6E1;
+    --good: #3E7A4D;
+    --good-soft: #E5F0E7;
+    --font-serif: 'Spectral', Georgia, 'Times New Roman', serif;
+    --font-sans: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12161C;
+      --panel: #1B222C;
+      --border: #2B3542;
+      --ink: #DDE3EA;
+      --muted: #93A0AF;
+      --accent: #5FB3B9;
+      --accent-soft: #1E2E30;
+      --danger: #E2694E;
+      --danger-soft: #33201C;
+      --good: #6FBE84;
+      --good-soft: #1C2B20;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #12161C;
+    --panel: #1B222C;
+    --border: #2B3542;
+    --ink: #DDE3EA;
+    --muted: #93A0AF;
+    --accent: #5FB3B9;
+    --accent-soft: #1E2E30;
+    --danger: #E2694E;
+    --danger-soft: #33201C;
+    --good: #6FBE84;
+    --good-soft: #1C2B20;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 16px 64px;
+  }
+
+  header.hero {
+    padding: 28px 16px 0;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  header.hero h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(1.5rem, 5vw, 1.9rem);
+    font-weight: 700;
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+
+  header.hero p.dates {
+    margin: 0 0 20px;
+    color: var(--muted);
+    font-size: 0.92rem;
+    font-family: var(--font-mono);
+  }
+
+  .tabbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg);
+    padding: 10px 16px 12px;
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--muted);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+
+  .tab-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .panel { padding-top: 20px; }
+
+  .section {
+    margin-bottom: 26px;
+  }
+
+  .section h2 {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 10px;
+  }
+
+  .section > p.lead {
+    margin: 0 0 12px;
+    color: var(--ink);
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+  }
+
+  .row-def {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    border-left: 3px solid var(--accent);
+    padding-left: 12px;
+  }
+
+  .row-def + .row-def { margin-top: 10px; }
+
+  .row-def .term {
+    font-weight: 600;
+    min-width: 118px;
+    flex-shrink: 0;
+  }
+
+  .row-def .def { color: var(--ink); }
+
+  .step-list {
+    counter-reset: step;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+
+  .step-list li {
+    counter-increment: step;
+    position: relative;
+    padding: 10px 0 10px 40px;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .step-list li:last-child { border-bottom: none; }
+
+  .step-list li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-list.good li::before { background: var(--good-soft); color: var(--good); }
+
+  .chips {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+  }
+
+  ul.plain {
+    margin: 0;
+    padding-left: 18px;
+  }
+  ul.plain li { margin-bottom: 6px; }
+
+  .attack-card {
+    border-left: 3px solid var(--danger);
+    background: var(--danger-soft);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+
+  .attack-card .name {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--danger);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .note-small {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 14px;
+  }
+
+  /* Quiz */
+  .score-bar {
+    position: sticky;
+    top: 53px;
+    z-index: 9;
+    background: var(--bg);
+    padding: 10px 0 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 18px;
+  }
+
+  #score-display {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .reset-btn {
+    border: 1px solid var(--border);
+    background: var(--panel);
+    color: var(--ink);
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+
+  h3.quiz-section-title {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 26px 0 10px;
+    color: var(--accent);
+  }
+
+  h3.quiz-section-title:first-child { margin-top: 0; }
+
+  .q-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+
+  .q-text {
+    margin: 0 0 10px;
+    font-weight: 600;
+  }
+
+  .opts {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .opt-btn {
+    text-align: left;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    cursor: pointer;
+  }
+
+  .opt-btn:disabled { cursor: default; }
+
+  .opt-btn.correct {
+    background: var(--good-soft);
+    border-color: var(--good);
+    color: var(--good);
+    font-weight: 600;
+  }
+
+  .opt-btn.incorrect {
+    background: var(--danger-soft);
+    border-color: var(--danger);
+    color: var(--danger);
+  }
+
+  @media (max-width: 420px) {
+    .row-def { flex-direction: column; gap: 2px; }
+    .row-def .term { min-width: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>Securitate informațională</h1>
+  <p class="dates">Notițe 02.09 – 16.09.2026 · recapitulare + test de verificare</p>
+</header>
+
+<div class="tabbar">
+  <button class="tab-btn active" id="btn-recap" onclick="showTab('recap')">Recapitulare</button>
+  <button class="tab-btn" id="btn-test" onclick="showTab('test')">Test (45 întrebări)</button>
+</div>
+
+<div class="wrap">
+
+  <!-- ===================== RECAPITULARE ===================== -->
+  <div id="panel-recap" class="panel">
+
+    <div class="section">
+      <h2>1. Triada CIA</h2>
+      <p class="lead">Securitatea informațională a fost creată de NASA în anii '80 și se bazează pe trei elemente fundamentale — triada CIA.</p>
+      <div class="card">
+        <div class="row-def"><span class="term">Confidențialitate</span><span class="def">Nemodificarea tipurilor de acces la fișiere și nespargerea fișierelor criptate.</span></div>
+        <div class="row-def"><span class="term">Integritate</span><span class="def">Nemodificarea conținutului fișierelor.</span></div>
+        <div class="row-def"><span class="term">Disponibilitate</span><span class="def">Cota de acces la unitățile de stocare și modul de acces la copiile de siguranță (backup).</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>2. Tipuri de atac</h2>
+      <div class="card">
+        <div class="row-def"><span class="term">Active</span><span class="def">Urmăresc modificarea / compromiterea funcționalității sistemului digital.</span></div>
+        <div class="row-def"><span class="term">Pasive</span><span class="def">Urmăresc obținerea informațiilor private sau confidențiale.</span></div>
+      </div>
+      <p class="note-small">Atât atacurile active, cât și cele pasive ocolesc măsurile de protecție standard și controalele de securitate adiționale.</p>
+    </div>
+
+    <div class="section">
+      <h2>3. Anatomia unui atac</h2>
+      <div class="chips">
+        <span class="chip">LAN</span>
+        <span class="chip">WAN</span>
+      </div>
+      <p class="lead">Toate atacurile urmăresc exploatarea punctelor slabe, atât hardware cât și software. Atacurile software sunt împărțite de obicei în 2 sau 4 pași, executați consecvent — pașii se repetă în ciclu.</p>
+      <div class="card">
+        <ol class="step-list">
+          <li>Scanarea sistemului digital</li>
+          <li>Escaladarea de privilegii (pentru analiza / colectarea amprentelor digitale)</li>
+          <li>Eliminarea urmelor digitale (relocarea și/sau ștergerea metadatelor)</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>4. Testarea de penetrare</h2>
+      <p class="lead">Testele de penetrare, efectuate pentru a stabili vulnerabilitățile existente, sunt identice cu modalitățile de atac ale unui hacker.</p>
+      <div class="card">
+        <p style="margin-top:0">Tot ceea ce atacă hackerii poate fi catalogat în 3 compartimente:</p>
+        <ul class="plain">
+          <li>Atacuri îndreptate spre comportamentul software-ului</li>
+          <li>Atacuri îndreptate spre configurarea incorectă</li>
+          <li>Atacuri îndreptate spre utilizarea neresponsabilă (necorespunzătoare)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>5. Atacuri reale</h2>
+      <div class="attack-card">
+        <span class="name">Buffer overflow</span>
+        Dacă bufferul se mărește singur în urma umplerii, scopul e să adune lista tuturor pointerilor de memorie pentru a crea o hartă de adrese și a afla unde se află sistemul de operare în RAM. Dacă bufferul nu se mărește, programul se poate comporta straniu — posibil crash sau execuție de cod străin.
+      </div>
+      <div class="attack-card">
+        <span class="name">SQL injection</span>
+        Considerată o eroare de configurare (mis-configuration). În fișierul de configurare se recomandă o linie de tipul „no script in login”, pentru a dezactiva folosirea scripturilor la login.
+      </div>
+      <div class="attack-card">
+        <span class="name">Format string error</span>
+        Rezultă atât din comportamentul greșit al aplicației, cât și din utilizarea incorectă de către utilizatori.
+      </div>
+      <div class="attack-card">
+        <span class="name">Race condition</span>
+        Menționată în listă — verifică materialul de curs pentru detalii suplimentare despre mecanism.
+      </div>
+      <div class="attack-card">
+        <span class="name">DoS / DDoS</span>
+        Acționează asupra comportamentului și utilizării sistemului, prin milioane de cereri trimise dintr-o singură locație (DoS) sau din mai multe locații simultan (DDoS), pentru a satura resursele — de la firewall până la baza de date.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>6. Scheme de răspuns la atacuri</h2>
+      <p class="lead">Există 3 scheme de răspuns la atacuri. Uneori acestea sunt combinate între ele.</p>
+      <div class="card">
+        <ol class="step-list good">
+          <li><strong>Atenuarea riscului</strong> — modificarea fișierelor de configurare (din backup), backup-ul datelor clienților, contracararea situației de vulnerabilitate.</li>
+          <li><strong>Acceptarea riscului</strong> — acționarea doar pe baza protocoalelor existente, de exemplu în cazul furtului de informații interne ale unei unități economice (angajați/clienți).</li>
+          <li><strong>Transferarea riscului</strong> — transferarea fluxului de date pe un server mai securizat sau către o companie de securitate IT.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>7. Principii de securizare</h2>
+      <p class="lead">Toate principiile de securizare se împart în 3 compartimente.</p>
+      <div class="card">
+        <ol class="step-list">
+          <li><strong>Configurare adecvată (inițială)</strong> — analiza vulnerabilităților clienților și analiza tehnicilor de atac specifice regiunii respective.</li>
+          <li><strong>Mentenanță continuă</strong> — modificarea configurației inițiale doar în cazul apariției incidentelor de atac.</li>
+          <li><strong>Auditul logurilor</strong> — activarea controalelor de securitate adiționale.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>8. Cele 7 modalități de securizare</h2>
+      <div class="card">
+        <ol class="step-list good">
+          <li><strong>Fail Safe</strong> (a cădea în siguranță) — activarea de servicii/sisteme adiționale în caz de prăbușire a sistemului de date; reduce pierderile de date și restabilește fișierele de configurare, comprimând daunele unui atac.</li>
+          <li><strong>Enforce least privilege</strong> — conferirea drepturilor minime necesare pentru îndeplinirea unei sarcini. Astfel, gestiunea incidentelor de atac va fi mai ușoară, iar atacul se va extinde mai lent.</li>
+          <li><strong>Segregate services</strong> — separarea serviciilor existente în microservicii, unite în macro-servicii (tranzacții). Astfel, în cazul unui atac digital, va fi mai simplu de vizualizat unde a avut loc breșa.</li>
+          <li><strong>Simplify (KISS)</strong> — înlăturarea framework-urilor adiționale și a configurațiilor bizare, pentru a elimina acțiunile nedorite care pot crea breșe în sisteme.</li>
+          <li><strong>Use security through obscurity wisely</strong> — presupune crearea documentației necesare a infrastructurii de date (arhitectură, servicii, legături); astfel, gestiunea incidentelor de atac va fi mai ușoară.</li>
+          <li><strong>Doubt by default</strong> — orice sistem de date poate fi spart; nu poți sparge ceea ce nu știi cum funcționează. Astfel, sysadminii vor fi mai puțin predispuși să se lase în voia sorții.</li>
+          <li><strong>Stay up to date!</strong> — aplicațiile actualizate sunt în general mai puțin predispuse la buguri și erori, dar există excepții de luat în calcul. Cu cât mai des sunt actualizate aplicațiile, cu atât calitatea binară a software-ului poate fi mai joasă.</li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================== TEST ===================== -->
+  <div id="panel-test" class="panel" style="display:none">
+    <div class="score-bar">
+      <span id="score-display">Scor: 0 din 45</span>
+      <button class="reset-btn" onclick="resetQuiz()">Reia testul</button>
+    </div>
+    <div id="quiz-container"></div>
+  </div>
+
+</div>
+
+<script>
+  const quizData = [
+    // Triada CIA
+    {s:"Triada CIA", q:"Cine a creat conceptul de securitate informațională, și când?", o:["IBM, anii '90","NASA, anii '80","Microsoft, anii 2000","Pentagon, anii '70"], c:1},
+    {s:"Triada CIA", q:"Ce înseamnă acronimul CIA în securitate informațională?", o:["Confidențialitate, Integritate, Autenticitate","Confidențialitate, Integritate, Disponibilitate","Control, Identificare, Autorizare","Confidențialitate, Identitate, Acces"], c:1},
+    {s:"Triada CIA", q:"Ce presupune confidențialitatea?", o:["Nemodificarea conținutului fișierelor","Nemodificarea tipurilor de acces la fișiere și nespargerea fișierelor criptate","Accesul permanent la date","Ștergerea automată a metadatelor"], c:1},
+    {s:"Triada CIA", q:"Ce presupune integritatea?", o:["Nemodificarea conținutului fișierelor","Accesul neîntrerupt la servicii","Criptarea tuturor fișierelor","Auditul logurilor"], c:0},
+    {s:"Triada CIA", q:"Disponibilitatea se referă la...", o:["Cota de acces la unitățile de stocare / accesul la copiile de siguranță","Criptarea comunicațiilor","Autentificarea utilizatorilor","Analiza vulnerabilităților"], c:0},
+
+    // Tipuri de atac
+    {s:"Tipuri de atac", q:"Atacurile active urmăresc...", o:["Obținerea de informații private/confidențiale","Modificarea/compromiterea funcționalității sistemului digital","Crearea de backup-uri","Auditarea logurilor"], c:1},
+    {s:"Tipuri de atac", q:"Atacurile pasive urmăresc...", o:["Modificarea funcționalității sistemului","Obținerea informațiilor private sau confidențiale","Blocarea accesului la resurse","Escaladarea de privilegii"], c:1},
+    {s:"Tipuri de atac", q:"Ce au în comun atacurile active și pasive?", o:["Ambele necesită acces fizic la server","Ambele ocolesc măsurile de protecție standard și controalele de securitate adiționale","Ambele sunt posibile doar în WAN","Ambele necesită privilegii de administrator"], c:1},
+
+    // Anatomia unui atac
+    {s:"Anatomia unui atac", q:"Care sunt cele două locații principale ale unui atac?", o:["Cloud și on-premise","LAN și WAN","Hardware și firmware","Client și server"], c:1},
+    {s:"Anatomia unui atac", q:"Toate atacurile urmăresc exploatarea...", o:["Doar a punctelor slabe software","Doar a punctelor slabe hardware","Punctelor slabe atât hardware cât și software","Rețelelor wireless"], c:2},
+    {s:"Anatomia unui atac", q:"În câți pași sunt de obicei împărțite atacurile software?", o:["1 sau 3","2 sau 4","5 sau 6","Întotdeauna 10"], c:1},
+    {s:"Anatomia unui atac", q:"Cum se execută etapele/pașii unui atac?", o:["Aleatoriu, fără ordine","Consecvent, iar pașii se execută în ciclu","O singură dată, fără repetare","Doar manual, niciodată automatizat"], c:1},
+    {s:"Anatomia unui atac", q:"Care este primul pas al unui atac?", o:["Eliminarea urmelor digitale","Escaladarea de privilegii","Scanarea sistemului digital","Transferarea riscului"], c:2},
+    {s:"Anatomia unui atac", q:"Al doilea pas — escaladarea de privilegii — are ca scop...", o:["Analiza/colectarea amprentelor digitale","Ștergerea completă a sistemului","Backup-ul datelor","Configurarea firewall-ului"], c:0},
+    {s:"Anatomia unui atac", q:"Ultimul pas al unui atac este...", o:["Scanarea rețelei","Eliminarea urmelor digitale (relocarea/ștergerea metadatelor)","Instalarea unui antivirus","Notificarea victimei"], c:1},
+
+    // Testarea de penetrare
+    {s:"Testarea de penetrare", q:"Testele de penetrare sunt efectuate pentru a...", o:["Instala software nou","Stabili vulnerabilitățile existente, folosind metode identice cu cele ale unui hacker","Crea backup-uri automate","Elimina utilizatorii inactivi"], c:1},
+    {s:"Testarea de penetrare", q:"În câte compartimente pot fi catalogate atacurile hackerilor?", o:["2","3","4","5"], c:1},
+    {s:"Testarea de penetrare", q:"Care NU este una din cele 3 categorii de probleme de escaladare?", o:["Atacuri îndreptate spre comportamentul software-ului","Atacuri îndreptate spre configurarea incorectă","Atacuri îndreptate spre utilizarea neresponsabilă","Atacuri îndreptate spre hardware fizic distrus"], c:3},
+
+    // Atacuri reale
+    {s:"Atacuri reale", q:"Ce este un buffer overflow?", o:["O eroare de configurare a firewall-ului","Umplerea unui buffer care se mărește, pentru a crea o hartă a adreselor de memorie și a localiza sistemul de operare în RAM","Un tip de atac DDoS","O metodă de criptare"], c:1},
+    {s:"Atacuri reale", q:"Dacă bufferul NU se mărește în urma umplerii, ce se poate întâmpla?", o:["Nimic, sistemul rămâne neafectat","Programul se comportă straniu, ducând la crash sau execuție de cod străin","Se activează automat un backup","Se declanșează un audit al logurilor"], c:1},
+    {s:"Atacuri reale", q:"SQL injection este considerată...", o:["O problemă hardware","O eroare de configurare (mis-configuration)","Un atac de tip DDoS","O problemă de disponibilitate"], c:1},
+    {s:"Atacuri reale", q:"Ce măsură se recomandă în fișierul de configurare împotriva scripturilor la login?", o:["„allow all scripts”","„no script in login”","„enable javascript”","„disable firewall”"], c:1},
+    {s:"Atacuri reale", q:"Format string error este cauzat de...", o:["Doar hardware defect","Comportamentul greșit al software-ului și utilizarea incorectă de către utilizatori","Doar erori de rețea","Lipsa unui backup"], c:1},
+    {s:"Atacuri reale", q:"DoS/DDoS acționează la nivel de...", o:["Confidențialitate, prin criptare","Comportament și utilizare, prin milioane de cereri din una sau mai multe locații","Integritate, prin modificarea fișierelor","Escaladare de privilegii"], c:1},
+    {s:"Atacuri reale", q:"Diferența principală dintre DoS și DDoS este...", o:["DoS folosește criptare, DDoS nu","DoS provine dintr-o singură locație, DDoS din mai multe locații","DoS e legal, DDoS e ilegal","Nu există nicio diferență"], c:1},
+
+    // Scheme de răspuns
+    {s:"Scheme de răspuns la atacuri", q:"Câte scheme de răspuns la atacuri există?", o:["2","3","4","5"], c:1},
+    {s:"Scheme de răspuns la atacuri", q:"Atenuarea riscului presupune...", o:["Acționarea doar pe bază de protocoale","Transferarea fluxului de date către alt server","Modificarea fișierelor de configurare din backup, backup-ul datelor clienților și contracararea vulnerabilității","Ignorarea completă a incidentului"], c:2},
+    {s:"Scheme de răspuns la atacuri", q:"Acceptarea riscului se aplică, de exemplu, în cazul...", o:["Unui atac DDoS masiv","Furtului de informații interne ale unei unități economice (angajați/clienți)","Unei erori hardware","Unei actualizări software"], c:1},
+    {s:"Scheme de răspuns la atacuri", q:"Transferarea riscului presupune...", o:["Ștergerea tuturor datelor","Transferarea fluxului de date pe un server mai securizat sau la o companie de securitate IT","Acceptarea pierderii datelor","Creșterea bugetului de marketing"], c:1},
+    {s:"Scheme de răspuns la atacuri", q:"Este posibil ca schemele de răspuns la atacuri să fie combinate?", o:["Nu, niciodată","Da, sunt cazuri când se combină între ele","Doar atenuarea și acceptarea pot fi combinate","Doar în cazul atacurilor pasive"], c:1},
+
+    // Principii de securizare
+    {s:"Principii de securizare", q:"Principiile de securizare se împart în câte compartimente?", o:["2","3","5","7"], c:1},
+    {s:"Principii de securizare", q:"Configurarea adecvată (inițială) presupune...", o:["Doar instalarea unui antivirus","Analiza vulnerabilităților clienților și analiza tehnicilor de atac specifice regiunii","Ștergerea logurilor vechi","Actualizarea automată a tuturor aplicațiilor"], c:1},
+    {s:"Principii de securizare", q:"Mentenanța continuă presupune modificarea configurației inițiale...", o:["Zilnic, indiferent de context","Doar în cazul apariției incidentelor de atac","Niciodată","Doar la cererea clientului"], c:1},
+    {s:"Principii de securizare", q:"Auditul logurilor presupune...", o:["Ștergerea logurilor vechi","Activarea controalelor de securitate adiționale","Dezactivarea firewall-ului","Backup-ul zilnic al bazei de date"], c:1},
+
+    // Cele 7 modalități de securizare
+    {s:"Cele 7 modalități de securizare", q:"Care este al 7-lea principiu de securizare?", o:["Simplify (KISS)","Stay up to date!","Doubt by default","Fail Safe"], c:1},
+    {s:"Cele 7 modalități de securizare", q:"Principiul „Fail Safe” presupune...", o:["Ștergerea tuturor datelor în caz de atac","Activarea unor servicii/sisteme adiționale în caz de prăbușire a sistemului, pentru a reduce pierderile de date","Ignorarea vulnerabilităților minore","Creșterea numărului de utilizatori cu drepturi depline"], c:1},
+    {s:"Cele 7 modalități de securizare", q:"„Enforce least privilege” presupune...", o:["Acordarea drepturilor maxime tuturor angajaților","Conferirea drepturilor minime necesare pentru îndeplinirea unei sarcini","Eliminarea completă a drepturilor de acces","Partajarea parolelor de administrator"], c:1},
+    {s:"Cele 7 modalități de securizare", q:"Un efect al aplicării „least privilege” este că...", o:["Atacul se extinde mai rapid","Gestiunea incidentelor devine mai ușoară, iar atacul se extinde mai lent","Costurile cresc semnificativ","Toate serviciile devin publice"], c:1},
+    {s:"Cele 7 modalități de securizare", q:"„Segregate services” presupune...", o:["Unirea tuturor serviciilor într-un singur sistem monolitic","Separarea serviciilor existente în microservicii unite în macro-servicii (tranzacții)","Ștergerea serviciilor neutilizate","Externalizarea completă a serviciilor"], c:1},
+    {s:"Cele 7 modalități de securizare", q:"Avantajul segregării serviciilor în caz de atac digital este că...", o:["Atacul devine imposibil de detectat","Este mai simplu de vizualizat unde a avut loc breșa în sistemul de date","Toate datele sunt automat criptate","Numărul de utilizatori scade"], c:1},
+    {s:"Cele 7 modalități de securizare", q:"Principiul „Simplify (KISS)” presupune...", o:["Adăugarea cât mai multor framework-uri de securitate","Înlăturarea framework-urilor adiționale și a configurațiilor bizare, pentru a reduce breșele posibile","Complicarea deliberată a arhitecturii","Creșterea numărului de servicii"], c:1},
+    {s:"Cele 7 modalități de securizare", q:"Ce presupune, conform notițelor, principiul „Use security through obscurity wisely”?", o:["Ștergerea tuturor documentelor vechi","Crearea documentației necesare a infrastructurii de date (arhitectură, servicii, legături)","Interzicerea accesului la documentație","Documentarea doar a incidentelor majore"], c:1},
+    {s:"Cele 7 modalități de securizare", q:"„Doubt by default” se bazează pe ideea că...", o:["Toate sistemele sunt complet sigure","Orice sistem de date poate fi spart, iar nu poți sparge ceea ce nu știi cum funcționează","Doar sistemele vechi pot fi sparte","Utilizatorii nu trebuie niciodată verificați"], c:1},
+    {s:"Cele 7 modalități de securizare", q:"Conform principiului „Stay up to date”, aplicațiile actualizate sunt...", o:["Întotdeauna complet lipsite de erori, fără excepții","În general mai puțin predispuse la buguri și erori, dar există excepții de luat în calcul","Mereu mai vulnerabile decât cele vechi","Irelevante pentru securitate"], c:1},
+    {s:"Cele 7 modalități de securizare", q:"Ce paradox este menționat legat de actualizările frecvente ale aplicațiilor?", o:["Cu cât sunt actualizate mai des, cu atât calitatea binară a software-ului poate fi mai joasă","Actualizările frecvente elimină complet toate vulnerabilitățile","Actualizările nu au niciun efect asupra calității software-ului","Aplicațiile actualizate devin automat mai lente"], c:0}
+  ];
+
+  let state = {};
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem('secinfo-quiz-state-v1');
+      state = raw ? JSON.parse(raw) : {};
+    } catch (e) { state = {}; }
+  }
+
+  function saveState() {
+    try { localStorage.setItem('secinfo-quiz-state-v1', JSON.stringify(state)); } catch (e) {}
+  }
+
+  function renderQuiz() {
+    const container = document.getElementById('quiz-container');
+    container.innerHTML = '';
+    let lastSection = null;
+    quizData.forEach((item, idx) => {
+      if (item.s !== lastSection) {
+        const h = document.createElement('h3');
+        h.className = 'quiz-section-title';
+        h.textContent = item.s;
+        container.appendChild(h);
+        lastSection = item.s;
+      }
+      const card = document.createElement('div');
+      card.className = 'q-card';
+      card.setAttribute('data-idx', idx);
+
+      const qText = document.createElement('p');
+      qText.className = 'q-text';
+      qText.textContent = (idx + 1) + '. ' + item.q;
+      card.appendChild(qText);
+
+      const optsWrap = document.createElement('div');
+      optsWrap.className = 'opts';
+      item.o.forEach((optText, oIdx) => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.type = 'button';
+        btn.textContent = optText;
+        btn.addEventListener('click', () => answer(idx, oIdx));
+        optsWrap.appendChild(btn);
+      });
+      card.appendChild(optsWrap);
+      container.appendChild(card);
+    });
+    applyStoredAnswers();
+  }
+
+  function answer(idx, oIdx) {
+    if (state[idx] !== undefined) return;
+    state[idx] = oIdx;
+    saveState();
+    renderAnswerState(idx);
+    updateScore();
+  }
+
+  function renderAnswerState(idx) {
+    const card = document.querySelector('.q-card[data-idx="' + idx + '"]');
+    if (!card) return;
+    const buttons = card.querySelectorAll('.opt-btn');
+    const chosen = state[idx];
+    const correct = quizData[idx].c;
+    buttons.forEach((b, i) => {
+      b.disabled = true;
+      if (i === correct) b.classList.add('correct');
+      else if (i === Number(chosen)) b.classList.add('incorrect');
+    });
+  }
+
+  function applyStoredAnswers() {
+    Object.keys(state).forEach(idx => renderAnswerState(idx));
+    updateScore();
+  }
+
+  function updateScore() {
+    const answered = Object.keys(state).length;
+    let correctCount = 0;
+    Object.keys(state).forEach(idx => {
+      if (Number(state[idx]) === quizData[idx].c) correctCount++;
+    });
+    document.getElementById('score-display').textContent =
+      'Scor: ' + correctCount + ' din ' + quizData.length + ' (' + answered + ' răspunsuri date)';
+  }
+
+  function resetQuiz() {
+    state = {};
+    saveState();
+    renderQuiz();
+  }
+
+  function showTab(tab) {
+    document.getElementById('btn-recap').classList.toggle('active', tab === 'recap');
+    document.getElementById('btn-test').classList.toggle('active', tab === 'test');
+    document.getElementById('panel-recap').style.display = tab === 'recap' ? 'block' : 'none';
+    document.getElementById('panel-test').style.display = tab === 'test' ? 'block' : 'none';
+  }
+
+  loadState();
+  renderQuiz();
+</script>
+
+</body>
+</html>
