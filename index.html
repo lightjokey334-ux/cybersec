@@ -226,6 +226,50 @@
   }
   ul.plain li { margin-bottom: 6px; }
 
+  .flow-node {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 10px;
+    padding: 11px 14px;
+  }
+
+  .flow-node .flow-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .flow-node .flow-title { font-weight: 600; }
+
+  .flow-arrow {
+    text-align: center;
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.2;
+    padding: 3px 0;
+  }
+
+  .flow-closing {
+    margin-top: 12px;
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  p.bridge {
+    margin: 0 0 12px;
+    font-style: italic;
+    color: var(--accent);
+    font-size: 0.88rem;
+    padding-left: 10px;
+    border-left: 2px solid var(--accent);
+  }
+
   .attack-card {
     border-left: 3px solid var(--danger);
     background: var(--danger-soft);
@@ -350,14 +394,12 @@
 
 <div class="tabbar">
   <button class="tab-btn active" id="btn-recap" onclick="showTab('recap')">Recapitulare</button>
-  <button class="tab-btn" id="btn-test" onclick="showTab('test')">Test (45 întrebări)</button>
+  <button class="tab-btn" id="btn-test" onclick="showTab('test')">Test (54 întrebări)</button>
 </div>
 
 <div class="wrap">
 
   <!-- ===================== RECAPITULARE ===================== -->
-  <div id="panel-recap" class="panel">
-
     <div class="section">
       <h2>1. Triada CIA</h2>
       <p class="lead">Securitatea informațională a fost creată de NASA în anii '80 și se bazează pe trei elemente fundamentale — triada CIA.</p>
@@ -370,6 +412,7 @@
 
     <div class="section">
       <h2>2. Tipuri de atac</h2>
+      <p class="bridge">↳ Continuă direct din triada CIA: fiecare tip de atac lovește unul (sau mai multe) din cei trei piloni de mai sus.</p>
       <div class="card">
         <div class="row-def"><span class="term">Active</span><span class="def">Urmăresc modificarea / compromiterea funcționalității sistemului digital.</span></div>
         <div class="row-def"><span class="term">Pasive</span><span class="def">Urmăresc obținerea informațiilor private sau confidențiale.</span></div>
@@ -379,6 +422,7 @@
 
     <div class="section">
       <h2>3. Anatomia unui atac</h2>
+      <p class="bridge">↳ Indiferent dacă e activ sau pasiv, un atac se desfășoară după același tipar, în 3 etape.</p>
       <div class="chips">
         <span class="chip">LAN</span>
         <span class="chip">WAN</span>
@@ -395,6 +439,7 @@
 
     <div class="section">
       <h2>4. Testarea de penetrare</h2>
+      <p class="bridge">↳ Un pentester parcurge exact cele 3 etape de mai sus — de aceea ce găsește se împarte în aceleași 3 categorii de puncte slabe.</p>
       <p class="lead">Testele de penetrare, efectuate pentru a stabili vulnerabilitățile existente, sunt identice cu modalitățile de atac ale unui hacker.</p>
       <div class="card">
         <p style="margin-top:0">Tot ceea ce atacă hackerii poate fi catalogat în 3 compartimente:</p>
@@ -408,6 +453,7 @@
 
     <div class="section">
       <h2>5. Atacuri reale</h2>
+      <p class="bridge">↳ Fiecare atac de mai jos e o concretizare a uneia din cele 3 categorii de mai sus (comportament software / configurare greșită / utilizare neresponsabilă).</p>
       <div class="attack-card">
         <span class="name">Buffer overflow</span>
         Dacă bufferul se mărește singur în urma umplerii, scopul e să adune lista tuturor pointerilor de memorie pentru a crea o hartă de adrese și a afla unde se află sistemul de operare în RAM. Dacă bufferul nu se mărește, programul se poate comporta straniu — posibil crash sau execuție de cod străin.
@@ -432,6 +478,7 @@
 
     <div class="section">
       <h2>6. Scheme de răspuns la atacuri</h2>
+      <p class="bridge">↳ Odată ce un atac sau o vulnerabilitate a fost identificat — fie prin pentesting, fie live — trebuie ales unul din cele 3 răspunsuri de mai jos.</p>
       <p class="lead">Există 3 scheme de răspuns la atacuri. Uneori acestea sunt combinate între ele.</p>
       <div class="card">
         <ol class="step-list good">
@@ -444,6 +491,7 @@
 
     <div class="section">
       <h2>7. Principii de securizare</h2>
+      <p class="bridge">↳ Dincolo de a reacționa la un atac deja produs, ideea e să previi de la bun început: aceleași 3 compartimente structurează toată strategia de prevenție.</p>
       <p class="lead">Toate principiile de securizare se împart în 3 compartimente.</p>
       <div class="card">
         <ol class="step-list">
@@ -456,6 +504,7 @@
 
     <div class="section">
       <h2>8. Cele 7 modalități de securizare</h2>
+      <p class="bridge">↳ Cele 3 principii de mai sus rămân abstracte fără un plan concret — aici sunt cele 7 reguli practice care le pun în aplicare, zi de zi.</p>
       <div class="card">
         <ol class="step-list good">
           <li><strong>Fail Safe</strong> (a cădea în siguranță) — activarea de servicii/sisteme adiționale în caz de prăbușire a sistemului de date; reduce pierderile de date și restabilește fișierele de configurare, comprimând daunele unui atac.</li>
@@ -469,12 +518,33 @@
       </div>
     </div>
 
+<div id="panel-recap" class="panel">
+
+    <div class="section">
+      <h2>!Firul logic — cum se leagă totul!</h2>
+      <p class="lead">Nu sunt 8 teme separate, ci un singur ciclu: ce protejăm → cum e amenințat → cum se întâmplă concret → exemple reale → ce faci după → ce faci înainte, ca să previi.</p>
+      <div class="flow-node"><span class="flow-label">1 · Obiectiv</span><span class="flow-title">Triada CIA — ce anume protejăm (confidențialitate, integritate, disponibilitate)</span></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-node"><span class="flow-label">2 · Amenințare</span><span class="flow-title">Tipuri de atac — active (lovesc integritatea/disponibilitatea) vs. pasive (lovesc confidențialitatea)</span></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-node"><span class="flow-label">3 · Mecanism</span><span class="flow-title">Anatomia unui atac — aceleași 3 etape, indiferent de tip: scanare → escaladare de privilegii → eliminarea urmelor</span></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-node"><span class="flow-label">4 · Aceeași metodă, scop defensiv</span><span class="flow-title">Testarea de penetrare — parcurge exact etapele de mai sus, ca să găsească problemele înaintea unui hacker real</span></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-node"><span class="flow-label">5 · Exemple concrete</span><span class="flow-title">Atacuri reale — buffer overflow, SQL injection etc., fiecare fiind o concretizare a uneia din cele 3 categorii de probleme găsite prin pentesting</span></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-node"><span class="flow-label">6 · Reacție</span><span class="flow-title">Scheme de răspuns — ce faci după ce un atac (sau o vulnerabilitate) a fost identificat: atenuezi, accepți sau transferi riscul</span></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-node"><span class="flow-label">7 · Prevenție</span><span class="flow-title">Principii + cele 7 modalități de securizare — ce faci înainte, ca să nu mai ajungi la pasul 6</span></div>
+      <p class="flow-closing">Practic: pașii 3–4 sunt „rețeta” atacatorului; pasul 7 e aceeași rețetă, aplicată invers, de cei care apără sistemul — ca să protejeze exact cei trei piloni de la pasul 1.</p>
+    </div>
+
   </div>
 
   <!-- ===================== TEST ===================== -->
   <div id="panel-test" class="panel" style="display:none">
     <div class="score-bar">
-      <span id="score-display">Scor: 0 din 45</span>
+      <span id="score-display">Scor: 0 din 54</span>
       <button class="reset-btn" onclick="resetQuiz()">Reia testul</button>
     </div>
     <div id="quiz-container"></div>
@@ -485,78 +555,89 @@
 <script>
   const quizData = [
     // Triada CIA
-    {s:"Triada CIA", q:"Cine a creat conceptul de securitate informațională, și când?", o:["IBM, anii '90","NASA, anii '80","Microsoft, anii 2000","Pentagon, anii '70"], c:1},
-    {s:"Triada CIA", q:"Ce înseamnă acronimul CIA în securitate informațională?", o:["Confidențialitate, Integritate, Autenticitate","Confidențialitate, Integritate, Disponibilitate","Control, Identificare, Autorizare","Confidențialitate, Identitate, Acces"], c:1},
-    {s:"Triada CIA", q:"Ce presupune confidențialitatea?", o:["Nemodificarea conținutului fișierelor","Nemodificarea tipurilor de acces la fișiere și nespargerea fișierelor criptate","Accesul permanent la date","Ștergerea automată a metadatelor"], c:1},
-    {s:"Triada CIA", q:"Ce presupune integritatea?", o:["Nemodificarea conținutului fișierelor","Accesul neîntrerupt la servicii","Criptarea tuturor fișierelor","Auditul logurilor"], c:0},
-    {s:"Triada CIA", q:"Disponibilitatea se referă la...", o:["Cota de acces la unitățile de stocare / accesul la copiile de siguranță","Criptarea comunicațiilor","Autentificarea utilizatorilor","Analiza vulnerabilităților"], c:0},
+    {s:"Triada CIA", q:"Cine a creat conceptul de securitate informațională, și când?", o:["NASA, în anii '80","IBM, la începutul anilor '90","Pentagonul, la sfârșitul anilor '70","Microsoft, la începutul anilor 2000"], c:0},
+    {s:"Triada CIA", q:"Ce înseamnă acronimul CIA în securitate informațională?", o:["Control, Identificare, Autorizare","Confidențialitate, Identitate, Acces","Confidențialitate, Integritate, Autenticitate","Confidențialitate, Integritate, Disponibilitate"], c:3},
+    {s:"Triada CIA", q:"Ce presupune, mai exact, confidențialitatea?", o:["Nemodificarea conținutului fișierelor din interfețe","Cota de acces la unitățile de stocare și la copiile de siguranță","Nemodificarea tipurilor de acces la fișiere și nespargerea fișierelor criptate","Activarea controalelor de securitate adiționale"], c:2},
+    {s:"Triada CIA", q:"Ce presupune, mai exact, integritatea?", o:["Nemodificarea conținutului fișierelor","Nespargerea fișierelor criptate","Accesul neîntrerupt la servicii esențiale","Cota de acces la copiile de siguranță"], c:0},
+    {s:"Triada CIA", q:"Disponibilitatea, ca element al triadei CIA, se referă strict la...", o:["Criptarea comunicațiilor dintre client și server","Autentificarea corectă a utilizatorilor","Analiza tehnicilor de atac specifice unei regiuni","Cota de acces la unitățile de stocare și modul de acces la copiile de siguranță"], c:3},
+    {s:"Triada CIA", q:"Un atacator reușește să citească fișiere confidențiale fără să le modifice și fără să afecteze funcționarea sistemului. Care element al triadei CIA e compromis direct?", o:["Doar disponibilitatea","Doar confidențialitatea","Doar integritatea","Atât integritatea, cât și disponibilitatea"], c:1},
 
     // Tipuri de atac
-    {s:"Tipuri de atac", q:"Atacurile active urmăresc...", o:["Obținerea de informații private/confidențiale","Modificarea/compromiterea funcționalității sistemului digital","Crearea de backup-uri","Auditarea logurilor"], c:1},
-    {s:"Tipuri de atac", q:"Atacurile pasive urmăresc...", o:["Modificarea funcționalității sistemului","Obținerea informațiilor private sau confidențiale","Blocarea accesului la resurse","Escaladarea de privilegii"], c:1},
-    {s:"Tipuri de atac", q:"Ce au în comun atacurile active și pasive?", o:["Ambele necesită acces fizic la server","Ambele ocolesc măsurile de protecție standard și controalele de securitate adiționale","Ambele sunt posibile doar în WAN","Ambele necesită privilegii de administrator"], c:1},
+    {s:"Tipuri de atac", q:"Atacurile active urmăresc, în principal...", o:["Obținerea informațiilor private sau confidențiale","Modificarea sau compromiterea funcționalității sistemului digital","Crearea de copii de siguranță suplimentare","Documentarea infrastructurii de date"], c:1},
+    {s:"Tipuri de atac", q:"Atacurile pasive urmăresc, în principal...", o:["Escaladarea de privilegii pe sistemul țintă","Blocarea completă a accesului la resurse","Obținerea informațiilor private sau confidențiale","Modificarea funcționalității sistemului digital"], c:2},
+    {s:"Tipuri de atac", q:"Ce au în comun atacurile active și cele pasive?", o:["Ambele necesită acces fizic direct la server","Ambele ocolesc măsurile de protecție standard și controalele de securitate adiționale","Ambele sunt posibile doar în rețele de tip WAN","Ambele presupun obligatoriu escaladarea de privilegii"], c:1},
+    {s:"Tipuri de atac", q:"Un atac prin care cineva citește pe ascuns traficul de rețea, fără să modifice nimic, ar fi clasificat drept...", o:["Atac activ, deoarece afectează disponibilitatea", "Atac pasiv, deoarece urmărește obținerea de informații", "Atac activ, deoarece compromite integritatea", "Nici activ, nici pasiv, fiindcă nu ocolește nicio măsură de protecție"], c:1},
 
     // Anatomia unui atac
-    {s:"Anatomia unui atac", q:"Care sunt cele două locații principale ale unui atac?", o:["Cloud și on-premise","LAN și WAN","Hardware și firmware","Client și server"], c:1},
-    {s:"Anatomia unui atac", q:"Toate atacurile urmăresc exploatarea...", o:["Doar a punctelor slabe software","Doar a punctelor slabe hardware","Punctelor slabe atât hardware cât și software","Rețelelor wireless"], c:2},
-    {s:"Anatomia unui atac", q:"În câți pași sunt de obicei împărțite atacurile software?", o:["1 sau 3","2 sau 4","5 sau 6","Întotdeauna 10"], c:1},
-    {s:"Anatomia unui atac", q:"Cum se execută etapele/pașii unui atac?", o:["Aleatoriu, fără ordine","Consecvent, iar pașii se execută în ciclu","O singură dată, fără repetare","Doar manual, niciodată automatizat"], c:1},
-    {s:"Anatomia unui atac", q:"Care este primul pas al unui atac?", o:["Eliminarea urmelor digitale","Escaladarea de privilegii","Scanarea sistemului digital","Transferarea riscului"], c:2},
-    {s:"Anatomia unui atac", q:"Al doilea pas — escaladarea de privilegii — are ca scop...", o:["Analiza/colectarea amprentelor digitale","Ștergerea completă a sistemului","Backup-ul datelor","Configurarea firewall-ului"], c:0},
-    {s:"Anatomia unui atac", q:"Ultimul pas al unui atac este...", o:["Scanarea rețelei","Eliminarea urmelor digitale (relocarea/ștergerea metadatelor)","Instalarea unui antivirus","Notificarea victimei"], c:1},
+    {s:"Anatomia unui atac", q:"Care sunt cele două locații principale menționate pentru un atac?", o:["Cloud și on-premise","Client și server","LAN și WAN","Hardware și firmware"], c:2},
+    {s:"Anatomia unui atac", q:"Toate atacurile urmăresc exploatarea...", o:["Doar a punctelor slabe de tip software","Punctelor slabe, atât hardware cât și software","Doar a configurațiilor de rețea wireless","Doar a punctelor slabe de tip hardware"], c:1},
+    {s:"Anatomia unui atac", q:"În câți pași sunt de obicei împărțite atacurile software, conform notițelor?", o:["1 sau 3 pași","5 sau 6 pași","2 sau 4 pași","Un număr fix de 10 pași"], c:2},
+    {s:"Anatomia unui atac", q:"Cum se execută etapele/pașii unui atac, odată începute?", o:["O singură dată, fără nicio repetare","Consecvent, iar pașii se execută în ciclu","Doar manual, niciodată în mod automatizat","În ordine aleatorie, la alegerea atacatorului"], c:1},
+    {s:"Anatomia unui atac", q:"Ordonează logic etapele unui atac: (I) escaladarea de privilegii, (II) scanarea sistemului digital, (III) eliminarea urmelor digitale.", o:["I → II → III","III → I → II","II → I → III","II → III → I"], c:2},
+    {s:"Anatomia unui atac", q:"Scopul escaladării de privilegii, ca etapă a unui atac, este legat direct de...", o:["Restabilirea fișierelor de configurare din backup","Analiza/colectarea amprentelor digitale","Ștergerea completă a metadatelor din sistem","Activarea controalelor de securitate adiționale"], c:1},
 
     // Testarea de penetrare
-    {s:"Testarea de penetrare", q:"Testele de penetrare sunt efectuate pentru a...", o:["Instala software nou","Stabili vulnerabilitățile existente, folosind metode identice cu cele ale unui hacker","Crea backup-uri automate","Elimina utilizatorii inactivi"], c:1},
-    {s:"Testarea de penetrare", q:"În câte compartimente pot fi catalogate atacurile hackerilor?", o:["2","3","4","5"], c:1},
-    {s:"Testarea de penetrare", q:"Care NU este una din cele 3 categorii de probleme de escaladare?", o:["Atacuri îndreptate spre comportamentul software-ului","Atacuri îndreptate spre configurarea incorectă","Atacuri îndreptate spre utilizarea neresponsabilă","Atacuri îndreptate spre hardware fizic distrus"], c:3},
+    {s:"Testarea de penetrare", q:"Testele de penetrare sunt efectuate, în esență, pentru a...", o:["Instala servicii și sisteme adiționale de tip fail-safe","Crea documentația necesară a infrastructurii de date","Stabili vulnerabilitățile existente, cu metode identice cu ale unui hacker","Transfera fluxul de date pe un server mai securizat"], c:2},
+    {s:"Testarea de penetrare", q:"În câte compartimente pot fi catalogate, conform notițelor, atacurile pe care le poate încerca un hacker?", o:["2 compartimente","4 compartimente","5 compartimente","3 compartimente"], c:3},
+    {s:"Testarea de penetrare", q:"Care dintre următoarele NU este una din cele 3 categorii de probleme de escaladare menționate?", o:["Atacuri îndreptate spre configurarea incorectă","Atacuri îndreptate spre hardware fizic distrus fizic","Atacuri îndreptate spre comportamentul software-ului","Atacuri îndreptate spre utilizarea neresponsabilă"], c:1},
+    {s:"Testarea de penetrare", q:"O echipă de securitate descoperă, prin testare de penetrare, că angajații folosesc parole slabe și le notează pe bilețele lipite de monitor. În care categorie se încadrează cel mai bine această problemă?", o:["Configurare incorectă a sistemului","Comportamentul software-ului","Utilizare neresponsabilă/necorespunzătoare","Nu se încadrează în niciuna dintre categorii"], c:2},
 
     // Atacuri reale
-    {s:"Atacuri reale", q:"Ce este un buffer overflow?", o:["O eroare de configurare a firewall-ului","Umplerea unui buffer care se mărește, pentru a crea o hartă a adreselor de memorie și a localiza sistemul de operare în RAM","Un tip de atac DDoS","O metodă de criptare"], c:1},
-    {s:"Atacuri reale", q:"Dacă bufferul NU se mărește în urma umplerii, ce se poate întâmpla?", o:["Nimic, sistemul rămâne neafectat","Programul se comportă straniu, ducând la crash sau execuție de cod străin","Se activează automat un backup","Se declanșează un audit al logurilor"], c:1},
-    {s:"Atacuri reale", q:"SQL injection este considerată...", o:["O problemă hardware","O eroare de configurare (mis-configuration)","Un atac de tip DDoS","O problemă de disponibilitate"], c:1},
-    {s:"Atacuri reale", q:"Ce măsură se recomandă în fișierul de configurare împotriva scripturilor la login?", o:["„allow all scripts”","„no script in login”","„enable javascript”","„disable firewall”"], c:1},
-    {s:"Atacuri reale", q:"Format string error este cauzat de...", o:["Doar hardware defect","Comportamentul greșit al software-ului și utilizarea incorectă de către utilizatori","Doar erori de rețea","Lipsa unui backup"], c:1},
-    {s:"Atacuri reale", q:"DoS/DDoS acționează la nivel de...", o:["Confidențialitate, prin criptare","Comportament și utilizare, prin milioane de cereri din una sau mai multe locații","Integritate, prin modificarea fișierelor","Escaladare de privilegii"], c:1},
-    {s:"Atacuri reale", q:"Diferența principală dintre DoS și DDoS este...", o:["DoS folosește criptare, DDoS nu","DoS provine dintr-o singură locație, DDoS din mai multe locații","DoS e legal, DDoS e ilegal","Nu există nicio diferență"], c:1},
+    {s:"Atacuri reale", q:"Ce urmărește, mai exact, un atac de tip buffer overflow?", o:["Dezactivarea scripturilor folosite la autentificare","Adunarea pointerilor de memorie pentru a crea o hartă de adrese și a localiza sistemul de operare în RAM","Saturarea firewall-ului prin milioane de cereri simultane","Exploatarea unei erori de configurare a bazei de date"], c:1},
+    {s:"Atacuri reale", q:"Dacă bufferul NU se mărește în urma umplerii lui, ce se poate întâmpla, conform notițelor?", o:["Sistemul rămâne complet neafectat de eveniment","Se declanșează automat auditul logurilor de securitate","Programul se poate comporta straniu, ducând la crash sau execuție de cod străin","Se activează automat schema de transferare a riscului"], c:2},
+    {s:"Atacuri reale", q:"SQL injection este considerată, conform notițelor, drept...", o:["O problemă strict de natură hardware","O eroare de configurare (mis-configuration)","O consecință directă a unui atac de tip DDoS","O problemă exclusiv de disponibilitate a serviciului"], c:1},
+    {s:"Atacuri reale", q:"Ce linie se recomandă în fișierul de configurare, împotriva folosirii scripturilor la autentificare?", o:["„disable firewall”","„enable javascript”","„allow all scripts”","„no script in login”"], c:3},
+    {s:"Atacuri reale", q:"Format string error este cauzat, conform notițelor, de...", o:["Doar de o defecțiune hardware la nivel de server","Comportamentul greșit al aplicației și utilizarea incorectă de către utilizatori","Doar de erori apărute la nivelul rețelei","Lipsa unei copii de siguranță recente"], c:1},
+    {s:"Atacuri reale", q:"DoS/DDoS acționează, conform notițelor, la nivel de...", o:["Integritate, prin modificarea directă a fișierelor","Confidențialitate, prin ocolirea criptării","Comportament și utilizare, prin milioane de cereri din una sau mai multe locații","Escaladare de privilegii, prin obținerea drepturilor de administrator"], c:2},
+    {s:"Atacuri reale", q:"Diferența principală dintre DoS și DDoS, conform notițelor, este că...", o:["DoS provine dintr-o singură locație, iar DDoS din mai multe locații simultan","DoS afectează doar disponibilitatea, iar DDoS afectează doar confidențialitatea","DoS este o formă de SQL injection, iar DDoS nu are legătură cu aceasta","Nu există nicio diferență reală între cele două"], c:0},
+    {s:"Atacuri reale", q:"Care dintre următoarele perechi atac–categorie de problemă este corect asociată, conform logicii notițelor?", o:["Buffer overflow — utilizare neresponsabilă","SQL injection (prin lipsa liniei „no script in login”) — configurare incorectă","DDoS — configurare incorectă","Format string error — doar comportamentul software-ului, fără implicarea utilizatorului"], c:1},
 
     // Scheme de răspuns
-    {s:"Scheme de răspuns la atacuri", q:"Câte scheme de răspuns la atacuri există?", o:["2","3","4","5"], c:1},
-    {s:"Scheme de răspuns la atacuri", q:"Atenuarea riscului presupune...", o:["Acționarea doar pe bază de protocoale","Transferarea fluxului de date către alt server","Modificarea fișierelor de configurare din backup, backup-ul datelor clienților și contracararea vulnerabilității","Ignorarea completă a incidentului"], c:2},
-    {s:"Scheme de răspuns la atacuri", q:"Acceptarea riscului se aplică, de exemplu, în cazul...", o:["Unui atac DDoS masiv","Furtului de informații interne ale unei unități economice (angajați/clienți)","Unei erori hardware","Unei actualizări software"], c:1},
-    {s:"Scheme de răspuns la atacuri", q:"Transferarea riscului presupune...", o:["Ștergerea tuturor datelor","Transferarea fluxului de date pe un server mai securizat sau la o companie de securitate IT","Acceptarea pierderii datelor","Creșterea bugetului de marketing"], c:1},
-    {s:"Scheme de răspuns la atacuri", q:"Este posibil ca schemele de răspuns la atacuri să fie combinate?", o:["Nu, niciodată","Da, sunt cazuri când se combină între ele","Doar atenuarea și acceptarea pot fi combinate","Doar în cazul atacurilor pasive"], c:1},
+    {s:"Scheme de răspuns la atacuri", q:"Câte scheme de răspuns la atacuri sunt menționate în notițe?", o:["2 scheme","4 scheme","5 scheme","3 scheme"], c:3},
+    {s:"Scheme de răspuns la atacuri", q:"Atenuarea riscului presupune, printre altele...", o:["Acționarea strict pe baza protocoalelor existente","Transferarea fluxului de date către un alt server","Modificarea fișierelor de configurare din backup și backup-ul datelor clienților","Ignorarea completă a incidentului până la rezolvarea de la sine"], c:2},
+    {s:"Scheme de răspuns la atacuri", q:"Acceptarea riscului se aplică, conform exemplului din notițe, în cazul...", o:["Unei erori hardware apărute brusc","Furtului de informații interne ale unei unități economice (angajați/clienți)","Unui atac DDoS de proporții mari","Unei actualizări de software eșuate"], c:1},
+    {s:"Scheme de răspuns la atacuri", q:"Transferarea riscului presupune, conform notițelor...", o:["Ștergerea definitivă a tuturor datelor afectate","Acceptarea pierderii permanente a datelor","Transferarea fluxului de date pe un server mai securizat sau la o companie de securitate IT","Creșterea bugetului alocat departamentului de marketing"], c:2},
+    {s:"Scheme de răspuns la atacuri", q:"O companie descoperă o vulnerabilitate critică chiar în timpul unui eveniment public major, când orice întrerupere ar fi extrem de costisitoare, și decide temporar să nu intervină, respectând totuși un protocol intern clar pentru o astfel de situație. Care schemă descrie cel mai bine această decizie?", o:["Atenuarea riscului","Transferarea riscului","Acceptarea riscului","Nu se încadrează în nicio schemă menționată în notițe"], c:2},
 
     // Principii de securizare
-    {s:"Principii de securizare", q:"Principiile de securizare se împart în câte compartimente?", o:["2","3","5","7"], c:1},
-    {s:"Principii de securizare", q:"Configurarea adecvată (inițială) presupune...", o:["Doar instalarea unui antivirus","Analiza vulnerabilităților clienților și analiza tehnicilor de atac specifice regiunii","Ștergerea logurilor vechi","Actualizarea automată a tuturor aplicațiilor"], c:1},
-    {s:"Principii de securizare", q:"Mentenanța continuă presupune modificarea configurației inițiale...", o:["Zilnic, indiferent de context","Doar în cazul apariției incidentelor de atac","Niciodată","Doar la cererea clientului"], c:1},
-    {s:"Principii de securizare", q:"Auditul logurilor presupune...", o:["Ștergerea logurilor vechi","Activarea controalelor de securitate adiționale","Dezactivarea firewall-ului","Backup-ul zilnic al bazei de date"], c:1},
+    {s:"Principii de securizare", q:"Toate principiile de securizare se împart, conform notițelor, în câte compartimente?", o:["2 compartimente","3 compartimente","5 compartimente","7 compartimente"], c:1},
+    {s:"Principii de securizare", q:"Configurarea adecvată (inițială) presupune, conform notițelor...", o:["Actualizarea automată, fără excepție, a tuturor aplicațiilor","Ștergerea periodică a logurilor mai vechi de o lună","Analiza vulnerabilităților clienților și analiza tehnicilor de atac specifice regiunii","Instalarea unui singur produs antivirus, fără alte măsuri"], c:2},
+    {s:"Principii de securizare", q:"Mentenanța continuă presupune modificarea configurației inițiale...", o:["Zilnic, indiferent dacă a apărut sau nu un incident","Doar în cazul apariției incidentelor de atac","Niciodată, odată ce configurarea inițială este stabilită","Doar la solicitarea expresă a unui client extern"], c:1},
+    {s:"Principii de securizare", q:"Auditul logurilor, ca al treilea compartiment al principiilor de securizare, este cel mai strâns legat de care dintre următoarele idei?", o:["Activarea controalelor de securitate adiționale, pe baza a ceea ce arată logurile","Ștergerea logurilor imediat după fiecare sesiune de lucru","Înlocuirea completă a configurării inițiale","Transferarea responsabilității către o companie externă"], c:0},
 
     // Cele 7 modalități de securizare
-    {s:"Cele 7 modalități de securizare", q:"Care este al 7-lea principiu de securizare?", o:["Simplify (KISS)","Stay up to date!","Doubt by default","Fail Safe"], c:1},
-    {s:"Cele 7 modalități de securizare", q:"Principiul „Fail Safe” presupune...", o:["Ștergerea tuturor datelor în caz de atac","Activarea unor servicii/sisteme adiționale în caz de prăbușire a sistemului, pentru a reduce pierderile de date","Ignorarea vulnerabilităților minore","Creșterea numărului de utilizatori cu drepturi depline"], c:1},
-    {s:"Cele 7 modalități de securizare", q:"„Enforce least privilege” presupune...", o:["Acordarea drepturilor maxime tuturor angajaților","Conferirea drepturilor minime necesare pentru îndeplinirea unei sarcini","Eliminarea completă a drepturilor de acces","Partajarea parolelor de administrator"], c:1},
-    {s:"Cele 7 modalități de securizare", q:"Un efect al aplicării „least privilege” este că...", o:["Atacul se extinde mai rapid","Gestiunea incidentelor devine mai ușoară, iar atacul se extinde mai lent","Costurile cresc semnificativ","Toate serviciile devin publice"], c:1},
-    {s:"Cele 7 modalități de securizare", q:"„Segregate services” presupune...", o:["Unirea tuturor serviciilor într-un singur sistem monolitic","Separarea serviciilor existente în microservicii unite în macro-servicii (tranzacții)","Ștergerea serviciilor neutilizate","Externalizarea completă a serviciilor"], c:1},
-    {s:"Cele 7 modalități de securizare", q:"Avantajul segregării serviciilor în caz de atac digital este că...", o:["Atacul devine imposibil de detectat","Este mai simplu de vizualizat unde a avut loc breșa în sistemul de date","Toate datele sunt automat criptate","Numărul de utilizatori scade"], c:1},
-    {s:"Cele 7 modalități de securizare", q:"Principiul „Simplify (KISS)” presupune...", o:["Adăugarea cât mai multor framework-uri de securitate","Înlăturarea framework-urilor adiționale și a configurațiilor bizare, pentru a reduce breșele posibile","Complicarea deliberată a arhitecturii","Creșterea numărului de servicii"], c:1},
-    {s:"Cele 7 modalități de securizare", q:"Ce presupune, conform notițelor, principiul „Use security through obscurity wisely”?", o:["Ștergerea tuturor documentelor vechi","Crearea documentației necesare a infrastructurii de date (arhitectură, servicii, legături)","Interzicerea accesului la documentație","Documentarea doar a incidentelor majore"], c:1},
-    {s:"Cele 7 modalități de securizare", q:"„Doubt by default” se bazează pe ideea că...", o:["Toate sistemele sunt complet sigure","Orice sistem de date poate fi spart, iar nu poți sparge ceea ce nu știi cum funcționează","Doar sistemele vechi pot fi sparte","Utilizatorii nu trebuie niciodată verificați"], c:1},
-    {s:"Cele 7 modalități de securizare", q:"Conform principiului „Stay up to date”, aplicațiile actualizate sunt...", o:["Întotdeauna complet lipsite de erori, fără excepții","În general mai puțin predispuse la buguri și erori, dar există excepții de luat în calcul","Mereu mai vulnerabile decât cele vechi","Irelevante pentru securitate"], c:1},
-    {s:"Cele 7 modalități de securizare", q:"Ce paradox este menționat legat de actualizările frecvente ale aplicațiilor?", o:["Cu cât sunt actualizate mai des, cu atât calitatea binară a software-ului poate fi mai joasă","Actualizările frecvente elimină complet toate vulnerabilitățile","Actualizările nu au niciun efect asupra calității software-ului","Aplicațiile actualizate devin automat mai lente"], c:0}
+    {s:"Cele 7 modalități de securizare", q:"Care este, în ordinea din notițe, al 7-lea principiu practic de securizare?", o:["Doubt by default","Simplify (KISS)","Stay up to date!","Fail Safe"], c:2},
+    {s:"Cele 7 modalități de securizare", q:"Principiul „Fail Safe” presupune, conform notițelor...", o:["Ignorarea vulnerabilităților considerate minore","Activarea unor servicii/sisteme adiționale în caz de prăbușire a sistemului de date","Creșterea numărului de utilizatori cu drepturi depline","Ștergerea imediată a tuturor datelor afectate de un atac"], c:1},
+    {s:"Cele 7 modalități de securizare", q:"„Enforce least privilege” presupune, conform notițelor...", o:["Partajarea parolelor de administrator între mai mulți angajați","Eliminarea completă a drepturilor de acces pentru toți utilizatorii","Acordarea drepturilor maxime tuturor angajaților, pentru eficiență","Conferirea drepturilor minime necesare pentru îndeplinirea unei sarcini"], c:3},
+    {s:"Cele 7 modalități de securizare", q:"Un efect direct al aplicării principiului „least privilege”, conform notițelor, este că...", o:["Costurile de implementare cresc semnificativ","Toate serviciile interne devin automat publice","Gestiunea incidentelor devine mai ușoară, iar atacul se extinde mai lent","Numărul angajaților cu acces la sistem crește"], c:2},
+    {s:"Cele 7 modalități de securizare", q:"„Segregate services” presupune, conform notițelor...", o:["Externalizarea completă a tuturor serviciilor către terți","Ștergerea serviciilor considerate neutilizate","Unirea tuturor serviciilor existente într-un singur sistem monolitic","Separarea serviciilor existente în microservicii, unite în macro-servicii (tranzacții)"], c:3},
+    {s:"Cele 7 modalități de securizare", q:"Avantajul segregării serviciilor, în cazul unui atac digital, este că...", o:["Toate datele devin automat criptate","Este mai simplu de vizualizat unde a avut loc breșa în sistemul de date","Atacul devine practic imposibil de detectat","Numărul total de utilizatori activi scade"], c:1},
+    {s:"Cele 7 modalități de securizare", q:"Principiul „Simplify (KISS)” presupune, conform notițelor...", o:["Complicarea deliberată a arhitecturii, pentru a deruta un atacator","Adăugarea a cât mai multe framework-uri suplimentare de securitate","Înlăturarea framework-urilor adiționale și a configurațiilor bizare","Creșterea numărului total de servicii disponibile"], c:2},
+    {s:"Cele 7 modalități de securizare", q:"Conform notițelor, principiul „Use security through obscurity wisely” este explicat prin ideea de...", o:["Interzicerea completă a accesului la orice documentație internă","Documentarea doar a incidentelor considerate majore","Ștergerea documentelor vechi legate de arhitectura sistemului","Crearea documentației necesare a infrastructurii de date (arhitectură, servicii, legături)"], c:3},
+    {s:"Cele 7 modalități de securizare", q:"„Doubt by default” se bazează, conform notițelor, pe ideea că...", o:["Utilizatorii nu trebuie niciodată verificați suplimentar","Doar sistemele vechi, neactualizate, pot fi sparte vreodată","Orice sistem de date poate fi spart, iar nu poți sparge ceea ce nu știi cum funcționează","Toate sistemele moderne sunt, prin design, complet sigure"], c:2},
+    {s:"Cele 7 modalități de securizare", q:"Conform principiului „Stay up to date”, aplicațiile actualizate sunt, în general...", o:["Mereu mai vulnerabile decât versiunile mai vechi","Complet irelevante pentru nivelul real de securitate","Întotdeauna complet lipsite de buguri, fără nicio excepție","Mai puțin predispuse la buguri și erori, deși există excepții de luat în calcul"], c:3},
+    {s:"Cele 7 modalități de securizare", q:"Care este paradoxul menționat în notițe legat de frecvența actualizărilor unei aplicații?", o:["Cu cât o aplicație este actualizată mai des, cu atât calitatea binară a software-ului poate fi mai joasă","Actualizările frecvente elimină, fără excepție, toate vulnerabilitățile existente","Frecvența actualizărilor nu are nicio legătură cu calitatea software-ului","Aplicațiile actualizate frecvent devin întotdeauna mai lente"], c:0},
+
+    // Sinteză — legături între teme
+    {s:"Sinteză — legături între teme", q:"Conform hărții „firul logic” de la începutul recapitulării, testarea de penetrare corespunde cărei idei centrale?", o:["Aceleași etape ca un atac real, dar aplicate cu scop defensiv","O schemă de răspuns aplicată după ce un atac a avut deja loc","Un principiu de prevenție complet independent de anatomia atacului","O formă specifică de atac pasiv"], c:0},
+    {s:"Sinteză — legături între teme", q:"Care element al triadei CIA este vizat cel mai direct de un atac de tip DDoS?", o:["Integritatea, prin modificarea conținutului fișierelor","Disponibilitatea, prin saturarea resurselor sistemului","Confidențialitatea, prin furtul direct de date","Niciunul dintre cele trei elemente ale triadei CIA"], c:1},
+    {s:"Sinteză — legături între teme", q:"Care este ordinea corectă, conform notițelor, a celor 3 compartimente ale principiilor de securizare?", o:["Auditul logurilor → mentenanța continuă → configurarea adecvată","Mentenanța continuă → configurarea adecvată → auditul logurilor","Configurarea adecvată (inițială) → mentenanța continuă → auditul logurilor","Configurarea adecvată → auditul logurilor → mentenanța continuă"], c:2},
+    {s:"Sinteză — legături între teme", q:"Din cele 3 scheme de răspuns la atacuri, care presupune cel mai explicit că se acționează doar pe baza unor protocoale prestabilite, fără o intervenție tehnică activă asupra sistemului?", o:["Atenuarea riscului","Transferarea riscului","Acceptarea riscului","Niciuna dintre cele trei, deoarece toate presupun intervenție tehnică"], c:2},
+    {s:"Sinteză — legături între teme", q:"Care dintre următoarele NU se numără printre cele 7 modalități de securizare enumerate în notițe?", o:["Enforce least privilege","Encrypt everything by default","Segregate services","Doubt by default"], c:1},
+    {s:"Sinteză — legături între teme", q:"Un atac de tip buffer overflow și un atac de tip DDoS diferă fundamental prin faptul că...", o:["Buffer overflow vizează structura internă a memoriei/programului, iar DDoS vizează saturarea resurselor prin volum de cereri","Buffer overflow este întotdeauna pasiv, iar DDoS este întotdeauna activ","Doar DDoS este considerat o eroare de configurare, buffer overflow nu","Nu există nicio diferență de mecanism între cele două"], c:0}
   ];
 
   let state = {};
 
   function loadState() {
     try {
-      const raw = localStorage.getItem('secinfo-quiz-state-v1');
+      const raw = localStorage.getItem('secinfo-quiz-state-v2');
       state = raw ? JSON.parse(raw) : {};
     } catch (e) { state = {}; }
   }
 
   function saveState() {
-    try { localStorage.setItem('secinfo-quiz-state-v1', JSON.stringify(state)); } catch (e) {}
+    try { localStorage.setItem('secinfo-quiz-state-v2', JSON.stringify(state)); } catch (e) {}
   }
 
   function renderQuiz() {
