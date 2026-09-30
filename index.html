@@ -67,10 +67,12 @@
   }
 
   .wrap {
-    max-width: 700px;
+    max-width: 1120px;
     margin: 0 auto;
     padding: 0 16px 64px;
   }
+
+  .wrap.test-layout { max-width: 1120px; }
 
   header.hero {
     padding: 28px 16px 0;
@@ -262,6 +264,7 @@
   }
 
   p.bridge {
+    display: none;
     margin: 0 0 12px;
     font-style: italic;
     color: var(--accent);
@@ -269,6 +272,21 @@
     padding-left: 10px;
     border-left: 2px solid var(--accent);
   }
+
+  p.bridge.show { display: block; }
+
+  .section h2.toggle {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .section h2.toggle::after {
+    content: " ▸";
+    color: var(--accent);
+    font-size: 0.8em;
+  }
+
+  .section h2.toggle.open::after { content: " ▾"; }
 
   .attack-card {
     border-left: 3px solid var(--danger);
@@ -293,6 +311,24 @@
   }
 
   /* Quiz */
+  .quiz-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 240px;
+    align-items: start;
+    gap: 24px;
+  }
+
+  .recap-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 240px;
+    align-items: start;
+    gap: 24px;
+  }
+
+  .recap-toolbar { display: none; }
+
+  .recap-section-title { scroll-margin-top: 90px; }
+
   .score-bar {
     position: sticky;
     top: 53px;
@@ -323,12 +359,74 @@
     cursor: pointer;
   }
 
+  .score-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-nav-toggle { display: none; }
+
+  .section-nav {
+    position: sticky;
+    top: 82px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    padding: 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--panel);
+  }
+
+  .section-nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .section-nav-header h2 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+  }
+
+  .section-nav-close { display: none; }
+
+  .section-nav-list {
+    display: grid;
+    gap: 4px;
+  }
+
+  .section-nav-item {
+    width: 100%;
+    padding: 8px 9px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--muted);
+    font: 500 0.88rem/1.3 var(--font-sans);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .section-nav-item:hover,
+  .section-nav-item.active {
+    border-color: var(--border);
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .section-nav-backdrop { display: none; }
+
   h3.quiz-section-title {
     font-family: var(--font-serif);
     font-size: 1.05rem;
     font-weight: 600;
     margin: 26px 0 10px;
     color: var(--accent);
+    scroll-margin-top: 90px;
   }
 
   h3.quiz-section-title:first-child { margin-top: 0; }
@@ -383,23 +481,111 @@
     .row-def { flex-direction: column; gap: 2px; }
     .row-def .term { min-width: 0; }
   }
+
+  @media (max-width: 760px) {
+    .wrap.test-layout { max-width: 700px; }
+    .quiz-layout { grid-template-columns: minmax(0, 1fr); }
+    .section-nav-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 10px;
+      background: var(--panel);
+      color: var(--ink);
+      font: 600 0.85rem var(--font-sans);
+      cursor: pointer;
+    }
+    .section-nav {
+      position: fixed;
+      z-index: 31;
+      top: 0;
+      right: 0;
+      width: min(340px, calc(100vw - 44px));
+      height: 100dvh;
+      max-height: none;
+      padding: max(18px, env(safe-area-inset-top)) 16px 20px;
+      border-radius: 0;
+      transform: translateX(100%);
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transition: transform 180ms ease, opacity 180ms ease, visibility 0s linear 180ms;
+    }
+    .section-nav.open {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+      transition: transform 180ms ease, opacity 180ms ease, visibility 0s;
+    }
+    .section-nav-close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .section-nav-backdrop {
+      display: block;
+      position: fixed;
+      z-index: 30;
+      inset: 0;
+      background: rgb(0 0 0 / 42%);
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      transition: opacity 180ms ease, visibility 0s linear 180ms;
+    }
+    .section-nav-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+      transition: opacity 180ms ease, visibility 0s;
+    }
+    body.section-nav-open { overflow: hidden; }
+    .score-bar { top: 53px; }
+    .recap-layout { grid-template-columns: minmax(0, 1fr); }
+    .recap-toolbar {
+      display: flex;
+      position: sticky;
+      top: 53px;
+      z-index: 9;
+      padding: 8px 0;
+      margin-bottom: 8px;
+      background: var(--bg);
+    }
+  }
 </style>
 </head>
 <body>
 
 <header class="hero">
   <h1>Securitate informațională</h1>
-  <p class="dates">Notițe 02.09 – 16.09.2026 · recapitulare + test de verificare</p>
+  <p class="dates">Notițe 02.09 – 30.09.2026 · recapitulare + test de verificare</p>
 </header>
 
 <div class="tabbar">
   <button class="tab-btn active" id="btn-recap" onclick="showTab('recap')">Recapitulare</button>
-  <button class="tab-btn" id="btn-test" onclick="showTab('test')">Test (54 întrebări)</button>
+  <button class="tab-btn" id="btn-test" onclick="showTab('test')">Test (79 întrebări)</button>
 </div>
 
 <div class="wrap">
 
   <!-- ===================== RECAPITULARE ===================== -->
+  <div id="panel-recap" class="panel">
+    <div class="recap-layout">
+      <div class="recap-main-column">
+        <div class="recap-toolbar">
+          <button class="section-nav-toggle" id="recap-section-nav-toggle" type="button" aria-expanded="false" aria-controls="recap-section-nav" onclick="toggleSectionNav(true, 'recap-section-nav')">☷ Teme</button>
+        </div>
     <div class="section">
       <h2>1. Triada CIA</h2>
       <p class="lead">Securitatea informațională a fost creată de NASA în anii '80 și se bazează pe trei elemente fundamentale — triada CIA.</p>
@@ -412,7 +598,7 @@
 
     <div class="section">
       <h2>2. Tipuri de atac</h2>
-      <p class="bridge">↳ Continuă direct din triada CIA: fiecare tip de atac lovește unul (sau mai multe) din cei trei piloni de mai sus.</p>
+      <p class="bridge">Continuă direct din triada CIA: fiecare tip de atac lovește unul (sau mai multe) din cei trei piloni de mai sus.</p>
       <div class="card">
         <div class="row-def"><span class="term">Active</span><span class="def">Urmăresc modificarea / compromiterea funcționalității sistemului digital.</span></div>
         <div class="row-def"><span class="term">Pasive</span><span class="def">Urmăresc obținerea informațiilor private sau confidențiale.</span></div>
@@ -422,7 +608,7 @@
 
     <div class="section">
       <h2>3. Anatomia unui atac</h2>
-      <p class="bridge">↳ Indiferent dacă e activ sau pasiv, un atac se desfășoară după același tipar, în 3 etape.</p>
+      <p class="bridge">Indiferent dacă e activ sau pasiv, un atac se desfășoară după același tipar, în 3 etape.</p>
       <div class="chips">
         <span class="chip">LAN</span>
         <span class="chip">WAN</span>
@@ -439,7 +625,7 @@
 
     <div class="section">
       <h2>4. Testarea de penetrare</h2>
-      <p class="bridge">↳ Un pentester parcurge exact cele 3 etape de mai sus — de aceea ce găsește se împarte în aceleași 3 categorii de puncte slabe.</p>
+      <p class="bridge">Un pentester parcurge exact cele 3 etape de mai sus — de aceea ce găsește se împarte în aceleași 3 categorii de puncte slabe.</p>
       <p class="lead">Testele de penetrare, efectuate pentru a stabili vulnerabilitățile existente, sunt identice cu modalitățile de atac ale unui hacker.</p>
       <div class="card">
         <p style="margin-top:0">Tot ceea ce atacă hackerii poate fi catalogat în 3 compartimente:</p>
@@ -453,7 +639,7 @@
 
     <div class="section">
       <h2>5. Atacuri reale</h2>
-      <p class="bridge">↳ Fiecare atac de mai jos e o concretizare a uneia din cele 3 categorii de mai sus (comportament software / configurare greșită / utilizare neresponsabilă).</p>
+      <p class="bridge">Fiecare atac de mai jos e o concretizare a uneia din cele 3 categorii de mai sus (comportament software / configurare greșită / utilizare neresponsabilă).</p>
       <div class="attack-card">
         <span class="name">Buffer overflow</span>
         Dacă bufferul se mărește singur în urma umplerii, scopul e să adune lista tuturor pointerilor de memorie pentru a crea o hartă de adrese și a afla unde se află sistemul de operare în RAM. Dacă bufferul nu se mărește, programul se poate comporta straniu — posibil crash sau execuție de cod străin.
@@ -478,7 +664,7 @@
 
     <div class="section">
       <h2>6. Scheme de răspuns la atacuri</h2>
-      <p class="bridge">↳ Odată ce un atac sau o vulnerabilitate a fost identificat — fie prin pentesting, fie live — trebuie ales unul din cele 3 răspunsuri de mai jos.</p>
+      <p class="bridge">Odată ce un atac sau o vulnerabilitate a fost identificat — fie prin pentesting, fie live — trebuie ales unul din cele 3 răspunsuri de mai jos.</p>
       <p class="lead">Există 3 scheme de răspuns la atacuri. Uneori acestea sunt combinate între ele.</p>
       <div class="card">
         <ol class="step-list good">
@@ -491,7 +677,7 @@
 
     <div class="section">
       <h2>7. Principii de securizare</h2>
-      <p class="bridge">↳ Dincolo de a reacționa la un atac deja produs, ideea e să previi de la bun început: aceleași 3 compartimente structurează toată strategia de prevenție.</p>
+      <p class="bridge">Dincolo de a reacționa la un atac deja produs, ideea e să previi de la bun început: aceleași 3 compartimente structurează toată strategia de prevenție.</p>
       <p class="lead">Toate principiile de securizare se împart în 3 compartimente.</p>
       <div class="card">
         <ol class="step-list">
@@ -504,7 +690,7 @@
 
     <div class="section">
       <h2>8. Cele 7 modalități de securizare</h2>
-      <p class="bridge">↳ Cele 3 principii de mai sus rămân abstracte fără un plan concret — aici sunt cele 7 reguli practice care le pun în aplicare, zi de zi.</p>
+      <p class="bridge">Cele 3 principii de mai sus rămân abstracte fără un plan concret — aici sunt cele 7 reguli practice care le pun în aplicare, zi de zi.</p>
       <div class="card">
         <ol class="step-list good">
           <li><strong>Fail Safe</strong> (a cădea în siguranță) — activarea de servicii/sisteme adiționale în caz de prăbușire a sistemului de date; reduce pierderile de date și restabilește fișierele de configurare, comprimând daunele unui atac.</li>
@@ -518,11 +704,85 @@
       </div>
     </div>
 
-<div id="panel-recap" class="panel">
+    <div class="section">
+      <h2>9. Implementarea securității în sisteme de operare</h2>
+      <p class="bridge">După principiile generale (secțiunile 7–8), urmează partea concretă: cum se aplică securitatea direct în sistemul de operare.</p>
+      <p class="lead">Toate măsurile întreprinse se împart în 3 categorii.</p>
+      <div class="card">
+        <ol class="step-list">
+          <li><strong>Memory leak</strong></li>
+          <li><strong>Izolarea utilizatorilor și a resurselor</strong></li>
+          <li><strong>Controlul accesului</strong> — uneori inclus în categoria 2.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <div class="row-def"><span class="term">Excluderea memory leak</span><span class="def">Presupune utilizarea funcțiilor speciale (constructor și destructor) pentru memoria dinamică (heap). Dacă nu există astfel de funcții, trebuie create și incluse în destructor: <em>memory free</em> și pointerul către structura dinamică setat la <em>null</em>.</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>10. Izolarea utilizatorilor și a resurselor</h2>
+      <p class="bridge">Categoria 2 din secțiunea anterioară, detaliată: mai întâi utilizatorii, apoi procesele.</p>
+      <div class="card">
+        <p style="margin-top:0"><strong>În primul rând — gestionarea utilizatorilor și a permisiunilor.</strong> Presupune:</p>
+        <ul class="plain">
+          <li>dezactivarea conturilor implicite</li>
+          <li>activarea politicilor de expirare a parolelor</li>
+          <li>blocarea conturilor după încercări eșuate</li>
+        </ul>
+      </div>
+      <p class="note-small" style="margin-top:0;margin-bottom:12px">Dacă sistemul de operare nu are astfel de măsuri de protecție (passwd, fail2ban), se folosesc alte aplicații similare.</p>
+      <p class="lead"><strong>În al doilea rând — izolarea aplicațiilor (proceselor).</strong> Presupune 6 aspecte:</p>
+      <div class="card">
+        <ol class="step-list good">
+          <li><strong>Protecția fișierelor sensibile</strong> — fișierele unde se păstrează parolele: /etc/shadow, /etc/ssh/keys.</li>
+          <li><strong>Izolarea parțială a sistemelor de fișiere</strong> — cu chroot.</li>
+          <li><strong>Izolarea completă a namespace-urilor de lucru</strong> — cu unshare; limitează partajarea între procese.</li>
+          <li><strong>Limitarea resurselor de calcul</strong> — cu cgroups (folosit și de Docker).</li>
+          <li><strong>Sandboxing</strong> — pentru utilizarea aplicațiilor care vin din afara repozitoriului (firejail). Containerele și virtualizatoarele sunt utilizate pe servere.</li>
+          <li><strong>Criptarea conținutului de stocare (semiizolarea)</strong> — tehnică unică: costul decriptării trebuie să fie mai scump decât costul informației criptate.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>11. Controlul accesului</h2>
+      <p class="bridge">Aceeași idee ca la „Enforce least privilege” (secțiunea 8), aplicată acum prin instrumente concrete ale sistemului de operare.</p>
+      <p class="lead">Presupune limitarea privilegiilor utilizatorilor cu extensii de securitate:</p>
+      <div class="chips" style="flex-wrap:wrap">
+        <span class="chip">AppArmor</span>
+        <span class="chip">SELinux</span>
+        <span class="chip">SMACK</span>
+        <span class="chip">Tomoyo</span>
+      </div>
+      <p class="lead">Controlul accesului e considerat o tehnică de izolare a utilizatorilor, însă se aseamănă mai mult cu separarea utilizatorilor după anumite criterii de acces.</p>
+      <div class="card">
+        <p style="margin-top:0">La sistemul de operare, securitatea se rezumă în 3 aspecte:</p>
+        <ol class="step-list">
+          <li>Sistemul de autentificare</li>
+          <li>Sistemul de audit</li>
+          <li>Extensii de securitate</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>12. Standardele de securizare</h2>
+      <p class="lead">În lumea IT, standardele de securitate se diferențiază de la țară la țară.</p>
+      <div class="chips" style="flex-wrap:wrap">
+        <span class="chip">EC</span>
+        <span class="chip">TCSEC</span>
+        <span class="chip">EAL4</span>
+      </div>
+      <div class="card">
+        <div class="row-def"><span class="term">EC</span><span class="def">Standard internațional.</span></div>
+      </div>
+      <p class="note-small">Notițele se opresc aici — pentru EC, TCSEC și EAL4 nu sunt încă detalii; verifică materialul de curs.</p>
+    </div>
 
     <div class="section">
       <h2>!Firul logic — cum se leagă totul!</h2>
-      <p class="lead">Nu sunt 8 teme separate, ci un singur ciclu: ce protejăm → cum e amenințat → cum se întâmplă concret → exemple reale → ce faci după → ce faci înainte, ca să previi.</p>
+      <p class="lead">Nu sunt teme separate, ci un singur ciclu: ce protejăm → cum e amenințat → cum se întâmplă concret → exemple reale → ce faci după → ce faci înainte, ca să previi → cum aplici totul în sistemul de operare.</p>
       <div class="flow-node"><span class="flow-label">1 · Obiectiv</span><span class="flow-title">Triada CIA — ce anume protejăm (confidențialitate, integritate, disponibilitate)</span></div>
       <div class="flow-arrow">↓</div>
       <div class="flow-node"><span class="flow-label">2 · Amenințare</span><span class="flow-title">Tipuri de atac — active (lovesc integritatea/disponibilitatea) vs. pasive (lovesc confidențialitatea)</span></div>
@@ -536,18 +796,44 @@
       <div class="flow-node"><span class="flow-label">6 · Reacție</span><span class="flow-title">Scheme de răspuns — ce faci după ce un atac (sau o vulnerabilitate) a fost identificat: atenuezi, accepți sau transferi riscul</span></div>
       <div class="flow-arrow">↓</div>
       <div class="flow-node"><span class="flow-label">7 · Prevenție</span><span class="flow-title">Principii + cele 7 modalități de securizare — ce faci înainte, ca să nu mai ajungi la pasul 6</span></div>
+      <div class="flow-arrow">↓</div>
+      <div class="flow-node"><span class="flow-label">8 · Aplicare în practică</span><span class="flow-title">Securitatea în sisteme de operare — principiile devin măsuri concrete: fără memory leak, utilizatori și procese izolate, acces controlat prin extensii de securitate; standardele de securizare (EC, TCSEC, EAL4) diferă de la țară la țară</span></div>
       <p class="flow-closing">Practic: pașii 3–4 sunt „rețeta” atacatorului; pasul 7 e aceeași rețetă, aplicată invers, de cei care apără sistemul — ca să protejeze exact cei trei piloni de la pasul 1.</p>
+      </div>
+      </div>
+      <aside class="section-nav" id="recap-section-nav" aria-label="Navigare între temele recapitulării">
+        <div class="section-nav-header">
+          <h2>Teme</h2>
+          <button class="section-nav-close" type="button" aria-label="Închide meniul" onclick="toggleSectionNav(false, 'recap-section-nav')">×</button>
+        </div>
+        <nav class="section-nav-list" id="recap-section-nav-list"></nav>
+      </aside>
+      <div class="section-nav-backdrop" id="recap-section-nav-backdrop" onclick="toggleSectionNav(false, 'recap-section-nav')"></div>
     </div>
-
   </div>
 
   <!-- ===================== TEST ===================== -->
   <div id="panel-test" class="panel" style="display:none">
-    <div class="score-bar">
-      <span id="score-display">Scor: 0 din 54</span>
-      <button class="reset-btn" onclick="resetQuiz()">Reia testul</button>
+    <div class="quiz-layout">
+      <div class="quiz-main-column">
+        <div class="score-bar">
+          <span id="score-display">Scor: 0 din 79</span>
+          <div class="score-actions">
+            <button class="section-nav-toggle" id="section-nav-toggle" type="button" aria-expanded="false" aria-controls="section-nav" onclick="toggleSectionNav(true)">☷ Compartimente</button>
+            <button class="reset-btn" onclick="resetQuiz()">Reia testul</button>
+          </div>
+        </div>
+        <div id="quiz-container"></div>
+      </div>
+      <aside class="section-nav" id="section-nav" aria-label="Navigare între compartimente">
+        <div class="section-nav-header">
+          <h2>Compartimente</h2>
+          <button class="section-nav-close" type="button" aria-label="Închide meniul" onclick="toggleSectionNav(false)">×</button>
+        </div>
+        <nav class="section-nav-list" id="section-nav-list"></nav>
+      </aside>
+      <div class="section-nav-backdrop" id="section-nav-backdrop" onclick="toggleSectionNav(false)"></div>
     </div>
-    <div id="quiz-container"></div>
   </div>
 
 </div>
@@ -624,7 +910,34 @@
     {s:"Sinteză — legături între teme", q:"Care este ordinea corectă, conform notițelor, a celor 3 compartimente ale principiilor de securizare?", o:["Auditul logurilor → mentenanța continuă → configurarea adecvată","Mentenanța continuă → configurarea adecvată → auditul logurilor","Configurarea adecvată (inițială) → mentenanța continuă → auditul logurilor","Configurarea adecvată → auditul logurilor → mentenanța continuă"], c:2},
     {s:"Sinteză — legături între teme", q:"Din cele 3 scheme de răspuns la atacuri, care presupune cel mai explicit că se acționează doar pe baza unor protocoale prestabilite, fără o intervenție tehnică activă asupra sistemului?", o:["Atenuarea riscului","Transferarea riscului","Acceptarea riscului","Niciuna dintre cele trei, deoarece toate presupun intervenție tehnică"], c:2},
     {s:"Sinteză — legături între teme", q:"Care dintre următoarele NU se numără printre cele 7 modalități de securizare enumerate în notițe?", o:["Enforce least privilege","Encrypt everything by default","Segregate services","Doubt by default"], c:1},
-    {s:"Sinteză — legături între teme", q:"Un atac de tip buffer overflow și un atac de tip DDoS diferă fundamental prin faptul că...", o:["Buffer overflow vizează structura internă a memoriei/programului, iar DDoS vizează saturarea resurselor prin volum de cereri","Buffer overflow este întotdeauna pasiv, iar DDoS este întotdeauna activ","Doar DDoS este considerat o eroare de configurare, buffer overflow nu","Nu există nicio diferență de mecanism între cele două"], c:0}
+    {s:"Sinteză — legături între teme", q:"Un atac de tip buffer overflow și un atac de tip DDoS diferă fundamental prin faptul că...", o:["Buffer overflow vizează structura internă a memoriei/programului, iar DDoS vizează saturarea resurselor prin volum de cereri","Buffer overflow este întotdeauna pasiv, iar DDoS este întotdeauna activ","Doar DDoS este considerat o eroare de configurare, buffer overflow nu","Nu există nicio diferență de mecanism între cele două"], c:0},
+
+    // Implementarea securității în sisteme de operare
+    {s:"Implementarea securității în SO", q:"În câte categorii se împart, conform notițelor, măsurile de implementare a securității în sistemele de operare?", o:["2 categorii","3 categorii","4 categorii","6 categorii"], c:1},
+    {s:"Implementarea securității în SO", q:"Care dintre următoarele este una din cele 3 categorii de măsuri de securitate în sistemele de operare?", o:["Scanarea sistemului digital","Acceptarea riscului","Enforce least privilege","Memory leak"], c:3},
+    {s:"Implementarea securității în SO", q:"Excluderea memory leak presupune utilizarea funcțiilor speciale (constructor și destructor) pentru...", o:["Memoria statică (stack)","Fișierele de swap de pe disc","Memoria dinamică (heap)","Memoria cache a procesorului"], c:2},
+    {s:"Implementarea securității în SO", q:"Care sunt funcțiile speciale folosite pentru excluderea memory leak?", o:["Constructor și destructor","Firewall și proxy","Compilator și linker","Encoder și decoder"], c:0},
+    {s:"Implementarea securității în SO", q:"Dacă lipsesc funcțiile speciale, ce trebuie incluse în destructor?", o:["Doar ștergerea fișierelor temporare","Eliberarea memoriei (memory free) și setarea pointerului către structura dinamică la null","Criptarea structurii dinamice","Repornirea sistemului de operare"], c:1},
+    {s:"Izolarea utilizatorilor și a resurselor", q:"Izolarea utilizatorilor și a resurselor presupune, în primul rând...", o:["Izolarea aplicațiilor (proceselor)","Criptarea conținutului de stocare","Utilizarea tehnicii de sandboxing","Gestionarea utilizatorilor și a permisiunilor"], c:3},
+    {s:"Izolarea utilizatorilor și a resurselor", q:"Care dintre următoarele măsuri face parte din gestionarea utilizatorilor și a permisiunilor?", o:["Activarea conturilor implicite","Dezactivarea conturilor implicite","Dezactivarea politicilor de expirare a parolelor","Partajarea parolelor între utilizatori"], c:1},
+    {s:"Izolarea utilizatorilor și a resurselor", q:"Ce se face cu conturile după încercări eșuate de autentificare?", o:["Sunt blocate","Sunt șterse automat","Primesc privilegii suplimentare","Nu se întâmplă nimic"], c:0},
+    {s:"Izolarea utilizatorilor și a resurselor", q:"Dacă sistemul de operare nu are măsuri de protecție precum passwd sau fail2ban, ce se face, conform notițelor?", o:["Se renunță la protecția conturilor","Se folosesc alte aplicații similare","Se dezactivează autentificarea","Se acceptă situația fără nicio măsură"], c:1},
+    {s:"Izolarea utilizatorilor și a resurselor", q:"Din câte aspecte constă, conform notițelor, izolarea aplicațiilor (proceselor)?", o:["3 aspecte","4 aspecte","7 aspecte","6 aspecte"], c:3},
+    {s:"Izolarea utilizatorilor și a resurselor", q:"Care sunt exemplele de fișiere sensibile date în notițe (unde se păstrează parolele)?", o:["/tmp și /var/cache","/etc/shadow și /etc/ssh/keys","/bin și /usr/bin","/home/public și /usr/share"], c:1},
+    {s:"Izolarea utilizatorilor și a resurselor", q:"Izolarea parțială a sistemelor de fișiere se realizează cu...", o:["unshare","cgroups","firejail","chroot"], c:3},
+    {s:"Izolarea utilizatorilor și a resurselor", q:"Izolarea completă a namespace-urilor de lucru se realizează cu...", o:["unshare — limitează partajarea între procese","chroot — limitează consumul de memorie","cgroups — protejează fișierele cu parole","firejail — criptează spațiul de stocare"], c:0},
+    {s:"Izolarea utilizatorilor și a resurselor", q:"Limitarea resurselor de calcul se realizează cu...", o:["chroot","unshare","cgroups","SELinux"], c:2},
+    {s:"Izolarea utilizatorilor și a resurselor", q:"Tehnica de sandboxing (de exemplu firejail) se folosește, conform notițelor, pentru...", o:["Aplicațiile care vin din afara repozitoriului","Doar aplicațiile din repozitoriul oficial","Fișierele de configurare ale sistemului","Conturile implicite ale utilizatorilor"], c:0},
+    {s:"Izolarea utilizatorilor și a resurselor", q:"Unde sunt utilizate, de regulă, containerele și virtualizatoarele, conform notițelor?", o:["Doar pe telefoane mobile","Pe servere","Doar pe dispozitive embedded","Nu sunt folosite în securitate"], c:1},
+    {s:"Izolarea utilizatorilor și a resurselor", q:"Care este particularitatea criptării conținutului de stocare (semiizolarea)?", o:["Cheia se păstrează lângă datele criptate","Datele criptate se șterg după un an","Costul decriptării trebuie să fie mai scump decât costul informației criptate","Costul decriptării trebuie să fie mai mic decât valoarea informației"], c:2},
+    {s:"Controlul accesului", q:"Controlul accesului presupune limitarea privilegiilor utilizatorilor cu ajutorul...", o:["Copiilor de siguranță","Extensiilor de securitate","Constructorilor și destructorilor","Politicilor de expirare a parolelor"], c:1},
+    {s:"Controlul accesului", q:"Care dintre următoarele NU este o extensie de securitate menționată pentru controlul accesului?", o:["AppArmor","SELinux","SMACK","chroot"], c:3},
+    {s:"Controlul accesului", q:"Deși e considerat o tehnică de izolare a utilizatorilor, controlul accesului se aseamănă mai mult cu...", o:["Criptarea completă a discului","Separarea utilizatorilor după anumite criterii de acces","Limitarea consumului de procesor","Ștergerea metadatelor"], c:1},
+    {s:"Controlul accesului", q:"În ce 3 aspecte se rezumă securitatea la nivelul sistemului de operare?", o:["Confidențialitate, integritate, disponibilitate","Atenuare, acceptare, transferare","Autentificare, audit, extensii de securitate","Scanare, escaladare, eliminarea urmelor"], c:2},
+    {s:"Standardele de securizare", q:"Cum se diferențiază standardele de securitate în lumea IT, conform notițelor?", o:["Nu se diferențiază, sunt identice peste tot","De la țară la țară","Doar în funcție de mărimea companiei","Doar în funcție de sistemul de operare"], c:1},
+    {s:"Standardele de securizare", q:"Care dintre următoarele este menționat în notițe ca standard de securitate?", o:["TCSEC","KISS","SELinux","cgroups"], c:0},
+    {s:"Standardele de securizare", q:"Cum este descris standardul EC în notițe?", o:["Extensie de securitate pentru Linux","Tehnică de izolare a proceselor","Standard internațional","Standard valabil într-o singură țară"], c:2},
+    {s:"Sinteză — SO și principiile generale", q:"Principiul „Enforce least privilege” din cele 7 modalități de securizare se leagă cel mai direct de ce măsură la nivelul sistemului de operare?", o:["Controlul accesului — limitarea privilegiilor utilizatorilor","Excluderea memory leak","Criptarea conținutului de stocare","Standardul TCSEC"], c:0}
   ];
 
   let state = {};
@@ -643,13 +956,28 @@
   function renderQuiz() {
     const container = document.getElementById('quiz-container');
     container.innerHTML = '';
+    const sectionNav = document.getElementById('section-nav-list');
+    sectionNav.innerHTML = '';
     let lastSection = null;
     quizData.forEach((item, idx) => {
       if (item.s !== lastSection) {
         const h = document.createElement('h3');
         h.className = 'quiz-section-title';
+        h.id = 'quiz-section-' + idx;
         h.textContent = item.s;
         container.appendChild(h);
+
+        const navButton = document.createElement('button');
+        navButton.className = 'section-nav-item';
+        navButton.type = 'button';
+        navButton.textContent = item.s;
+        navButton.dataset.target = h.id;
+        navButton.addEventListener('click', () => {
+          h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          toggleSectionNav(false);
+          setActiveSection(h.id);
+        });
+        sectionNav.appendChild(navButton);
         lastSection = item.s;
       }
       const card = document.createElement('div');
@@ -675,6 +1003,58 @@
       container.appendChild(card);
     });
     applyStoredAnswers();
+    updateActiveSection();
+  }
+
+  function setActiveSection(sectionId) {
+    document.querySelectorAll('.section-nav-item').forEach(button => {
+      const active = button.dataset.target === sectionId;
+      button.classList.toggle('active', active);
+      if (active) button.setAttribute('aria-current', 'location');
+      else button.removeAttribute('aria-current');
+    });
+  }
+
+  function updateActiveSection() {
+    const inTest = document.getElementById('panel-test').style.display !== 'none';
+    const sectionTitles = document.querySelectorAll(inTest ? '.quiz-section-title' : '.recap-section-title');
+    let activeTitle = sectionTitles[0];
+    sectionTitles.forEach(title => {
+      if (title.getBoundingClientRect().top <= 150) activeTitle = title;
+    });
+    if (activeTitle) setActiveSection(activeTitle.id);
+  }
+
+  function toggleSectionNav(open, navId = 'section-nav') {
+    const nav = document.getElementById(navId);
+    const backdrop = document.getElementById(navId + '-backdrop');
+    const toggle = document.getElementById(navId + '-toggle');
+    nav.classList.toggle('open', open);
+    backdrop.classList.toggle('open', open);
+    document.body.classList.toggle('section-nav-open', Boolean(document.querySelector('.section-nav.open')));
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  function initRecapNavigation() {
+    const navList = document.getElementById('recap-section-nav-list');
+    document.querySelectorAll('#panel-recap .section').forEach((section, idx) => {
+      const heading = section.querySelector('h2');
+      if (!heading) return;
+      heading.id = 'recap-topic-' + idx;
+      heading.classList.add('recap-section-title');
+
+      const navButton = document.createElement('button');
+      navButton.className = 'section-nav-item';
+      navButton.type = 'button';
+      navButton.textContent = heading.textContent;
+      navButton.dataset.target = heading.id;
+      navButton.addEventListener('click', () => {
+        heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        toggleSectionNav(false, 'recap-section-nav');
+        setActiveSection(heading.id);
+      });
+      navList.appendChild(navButton);
+    });
   }
 
   function answer(idx, oIdx) {
@@ -724,10 +1104,40 @@
     document.getElementById('btn-test').classList.toggle('active', tab === 'test');
     document.getElementById('panel-recap').style.display = tab === 'recap' ? 'block' : 'none';
     document.getElementById('panel-test').style.display = tab === 'test' ? 'block' : 'none';
+    document.querySelector('.wrap').classList.toggle('test-layout', tab === 'test');
+    requestAnimationFrame(updateActiveSection);
+  }
+
+  function initBridges() {
+    document.querySelectorAll('.section h2').forEach(h => {
+      const b = h.nextElementSibling;
+      if (!b || !b.classList.contains('bridge')) return;
+      h.classList.add('toggle');
+      h.setAttribute('role', 'button');
+      h.setAttribute('tabindex', '0');
+      h.setAttribute('aria-expanded', 'false');
+      const toggle = () => {
+        const open = b.classList.toggle('show');
+        h.classList.toggle('open', open);
+        h.setAttribute('aria-expanded', open ? 'true' : 'false');
+      };
+      h.addEventListener('click', toggle);
+      h.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
   }
 
   loadState();
   renderQuiz();
+  initRecapNavigation();
+  initBridges();
+  window.addEventListener('scroll', updateActiveSection, { passive: true });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') {
+      document.querySelectorAll('.section-nav.open').forEach(nav => toggleSectionNav(false, nav.id));
+    }
+  });
 </script>
 
 </body>
