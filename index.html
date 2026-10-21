@@ -288,6 +288,60 @@
 
   .section h2.toggle.open::after { content: " ▾"; }
 
+  .dgm-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+    margin: 12px 0;
+  }
+
+  .dgm { margin: 0; text-align: center; flex: 1 1 180px; max-width: 270px; }
+  .dgm svg { width: 100%; height: auto; display: block; }
+  .dgm figcaption { font-size: 0.82rem; color: var(--muted); margin-top: 6px; }
+  .dg-ring { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; }
+  .dg-dot { fill: var(--accent); }
+  .dg-core { fill: var(--panel); stroke: var(--ink); stroke-width: 1.5; }
+  .dg-flag { fill: var(--ink); stroke: var(--ink); stroke-width: 1.5; }
+  .dg-link { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 3 3; }
+  .dg-txt { fill: var(--ink); font-size: 11px; font-family: inherit; text-anchor: middle; }
+  .dg-num { fill: var(--accent); font-size: 13px; font-weight: 700; font-family: inherit; text-anchor: middle; }
+  .dg-small { fill: var(--muted); font-size: 9px; font-family: inherit; }
+
+  .subsection {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 12px;
+    padding: 14px 16px 6px;
+    margin-bottom: 14px;
+  }
+
+  .subsection h3 {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 10px;
+  }
+
+  .subsection h3.toggle {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .subsection h3.toggle::after {
+    content: " ▸";
+    color: var(--accent);
+    font-size: 0.8em;
+  }
+
+  .subsection h3.toggle.open::after { content: " ▾"; }
+
+  .subsection .card {
+    background: var(--bg);
+    border-color: transparent;
+  }
+
   .attack-card {
     border-left: 3px solid var(--danger);
     background: var(--danger-soft);
@@ -574,7 +628,7 @@
 
 <div class="tabbar">
   <button class="tab-btn active" id="btn-recap" onclick="showTab('recap')">Recapitulare</button>
-  <button class="tab-btn" id="btn-test" onclick="showTab('test')">Test (79 întrebări)</button>
+  <button class="tab-btn" id="btn-test" onclick="showTab('test')">Test (115 întrebări)</button>
 </div>
 
 <div class="wrap">
@@ -715,59 +769,63 @@
           <li><strong>Controlul accesului</strong> — uneori inclus în categoria 2.</li>
         </ol>
       </div>
-      <div class="card">
-        <div class="row-def"><span class="term">Excluderea memory leak</span><span class="def">Presupune utilizarea funcțiilor speciale (constructor și destructor) pentru memoria dinamică (heap). Dacă nu există astfel de funcții, trebuie create și incluse în destructor: <em>memory free</em> și pointerul către structura dinamică setat la <em>null</em>.</span></div>
+
+      <div class="subsection">
+        <h3>Memory leak</h3>
+        <div class="card">
+          <div class="row-def"><span class="term">Excluderea memory leak</span><span class="def">Presupune utilizarea funcțiilor speciale (constructor și destructor) pentru memoria dinamică (heap). Dacă nu există astfel de funcții, trebuie create și incluse în destructor: <em>memory free</em> și pointerul către structura dinamică setat la <em>null</em>.</span></div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3>Izolarea utilizatorilor și a resurselor</h3>
+        <p class="bridge">Categoria 2 din lista de mai sus, detaliată: mai întâi utilizatorii, apoi procesele.</p>
+        <div class="card">
+          <p style="margin-top:0"><strong>În primul rând — gestionarea utilizatorilor și a permisiunilor.</strong> Presupune:</p>
+          <ul class="plain">
+            <li>dezactivarea conturilor implicite</li>
+            <li>activarea politicilor de expirare a parolelor</li>
+            <li>blocarea conturilor după încercări eșuate</li>
+          </ul>
+        </div>
+        <p class="note-small" style="margin-top:0;margin-bottom:12px">Dacă sistemul de operare nu are astfel de măsuri de protecție (passwd, fail2ban), se folosesc alte aplicații similare.</p>
+        <p class="lead"><strong>În al doilea rând — izolarea aplicațiilor (proceselor).</strong> Presupune 6 aspecte:</p>
+        <div class="card">
+          <ol class="step-list good">
+            <li><strong>Protecția fișierelor sensibile</strong> — fișierele unde se păstrează parolele: /etc/shadow, /etc/ssh/keys.</li>
+            <li><strong>Izolarea parțială a sistemelor de fișiere</strong> — cu chroot.</li>
+            <li><strong>Izolarea completă a namespace-urilor de lucru</strong> — cu unshare; limitează partajarea între procese.</li>
+            <li><strong>Limitarea resurselor de calcul</strong> — cu cgroups (folosit și de Docker).</li>
+            <li><strong>Sandboxing</strong> — pentru utilizarea aplicațiilor care vin din afara repozitoriului (firejail). Containerele și virtualizatoarele sunt utilizate pe servere. Diferența: containerul și virtualizarea izolează <em>servicii</em>, iar sandbox-ul izolează <em>aplicații</em>.</li>
+            <li><strong>Criptarea conținutului de stocare (semiizolarea)</strong> — tehnică unică: costul decriptării trebuie să fie mai scump decât costul informației criptate.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3>Controlul accesului — uneori inclus în categoria 2.</h3>
+        <p class="bridge">Aceeași idee ca la „Enforce least privilege” (secțiunea 8), aplicată acum prin instrumente concrete ale sistemului de operare.</p>
+        <p class="lead">Presupune limitarea privilegiilor utilizatorilor cu extensii de securitate:</p>
+        <div class="chips" style="flex-wrap:wrap">
+          <span class="chip">AppArmor</span>
+          <span class="chip">SELinux</span>
+          <span class="chip">SMACK</span>
+          <span class="chip">Tomoyo</span>
+        </div>
+        <p class="lead">Controlul accesului e considerat o tehnică de izolare a utilizatorilor, însă se aseamănă mai mult cu separarea utilizatorilor după anumite criterii de acces.</p>
+        <div class="card">
+          <p style="margin-top:0">La sistemul de operare, securitatea se rezumă în 3 aspecte:</p>
+          <ol class="step-list">
+            <li>Sistemul de autentificare</li>
+            <li>Sistemul de audit</li>
+            <li>Extensii de securitate</li>
+          </ol>
+        </div>
       </div>
     </div>
 
     <div class="section">
-      <h2>10. Izolarea utilizatorilor și a resurselor</h2>
-      <p class="bridge">Categoria 2 din secțiunea anterioară, detaliată: mai întâi utilizatorii, apoi procesele.</p>
-      <div class="card">
-        <p style="margin-top:0"><strong>În primul rând — gestionarea utilizatorilor și a permisiunilor.</strong> Presupune:</p>
-        <ul class="plain">
-          <li>dezactivarea conturilor implicite</li>
-          <li>activarea politicilor de expirare a parolelor</li>
-          <li>blocarea conturilor după încercări eșuate</li>
-        </ul>
-      </div>
-      <p class="note-small" style="margin-top:0;margin-bottom:12px">Dacă sistemul de operare nu are astfel de măsuri de protecție (passwd, fail2ban), se folosesc alte aplicații similare.</p>
-      <p class="lead"><strong>În al doilea rând — izolarea aplicațiilor (proceselor).</strong> Presupune 6 aspecte:</p>
-      <div class="card">
-        <ol class="step-list good">
-          <li><strong>Protecția fișierelor sensibile</strong> — fișierele unde se păstrează parolele: /etc/shadow, /etc/ssh/keys.</li>
-          <li><strong>Izolarea parțială a sistemelor de fișiere</strong> — cu chroot.</li>
-          <li><strong>Izolarea completă a namespace-urilor de lucru</strong> — cu unshare; limitează partajarea între procese.</li>
-          <li><strong>Limitarea resurselor de calcul</strong> — cu cgroups (folosit și de Docker).</li>
-          <li><strong>Sandboxing</strong> — pentru utilizarea aplicațiilor care vin din afara repozitoriului (firejail). Containerele și virtualizatoarele sunt utilizate pe servere.</li>
-          <li><strong>Criptarea conținutului de stocare (semiizolarea)</strong> — tehnică unică: costul decriptării trebuie să fie mai scump decât costul informației criptate.</li>
-        </ol>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>11. Controlul accesului</h2>
-      <p class="bridge">Aceeași idee ca la „Enforce least privilege” (secțiunea 8), aplicată acum prin instrumente concrete ale sistemului de operare.</p>
-      <p class="lead">Presupune limitarea privilegiilor utilizatorilor cu extensii de securitate:</p>
-      <div class="chips" style="flex-wrap:wrap">
-        <span class="chip">AppArmor</span>
-        <span class="chip">SELinux</span>
-        <span class="chip">SMACK</span>
-        <span class="chip">Tomoyo</span>
-      </div>
-      <p class="lead">Controlul accesului e considerat o tehnică de izolare a utilizatorilor, însă se aseamănă mai mult cu separarea utilizatorilor după anumite criterii de acces.</p>
-      <div class="card">
-        <p style="margin-top:0">La sistemul de operare, securitatea se rezumă în 3 aspecte:</p>
-        <ol class="step-list">
-          <li>Sistemul de autentificare</li>
-          <li>Sistemul de audit</li>
-          <li>Extensii de securitate</li>
-        </ol>
-      </div>
-    </div>
-
-    <div class="section">
-      <h2>12. Standardele de securizare</h2>
+      <h2>10. Standardele de securizare</h2>
       <p class="lead">În lumea IT, standardele de securitate se diferențiază de la țară la țară.</p>
       <div class="chips" style="flex-wrap:wrap">
         <span class="chip">EC</span>
@@ -776,9 +834,146 @@
       </div>
       <div class="card">
         <div class="row-def"><span class="term">EC</span><span class="def">Standard internațional.</span></div>
+        <div class="row-def"><span class="term">TCSEC</span><span class="def">Trusted Computer System Evaluation Criteria — vezi detaliile mai jos.</span></div>
       </div>
       <p class="lead">Aceste standarde au un grad iar tarile au un grad minim dupa care aproba daca standardul e acceptat in tara respectiva</p>
-      <p class="note-small">Notițele se opresc aici — pentru EC, TCSEC și EAL4 nu sunt încă detalii; verifică materialul de curs.</p>
+      <p class="note-small">Pentru EC și EAL4 nu sunt încă detalii în notițe; TCSEC este detaliat mai jos.</p>
+
+      <div class="subsection">
+        <h3>TCSEC — privire de ansamblu</h3>
+        <p class="bridge">Clasele TCSEC se împart după criteriile de acces — aceeași idee ca la „Controlul accesului” (secțiunea 9): separarea utilizatorilor după anumite criterii.</p>
+        <p class="lead">TCSEC (Trusted Computer System Evaluation Criteria) are oficial <strong>7 nivele</strong>, împărțite în <strong>4 clase de securizare</strong>. Clasele se divid după criteriile de acces.</p>
+        <div class="chips" style="flex-wrap:wrap">
+          <span class="chip">D</span>
+          <span class="chip">C — DAC</span>
+          <span class="chip">B — MAC</span>
+          <span class="chip">A — RBAC/ABAC</span>
+        </div>
+        <div class="card">
+          <div class="row-def"><span class="term">Clasa D</span><span class="def">Presupune lipsa unui mod specializat de acces.</span></div>
+          <div class="row-def"><span class="term">Clasa C</span><span class="def">Protecție de tip DAC. Include 2 nivele: C1, C2.</span></div>
+          <div class="row-def"><span class="term">Clasa B</span><span class="def">Protecție de tip MAC. Include 3 nivele: B1, B2, B3.</span></div>
+          <div class="row-def"><span class="term">Clasa A</span><span class="def">Protecție verificată. Oficial include 1 nivel: A1.</span></div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3>Clasa C — DAC (Discretionary Access Control)</h3>
+        <p class="lead">Oferă o separare rudimentară a utilizatorilor de date, precum și definește regulile de acces pe bază de utilizator/grup. Include 2 nivele de securizare: C1 și C2.</p>
+        <div class="card">
+          <div class="row-def"><span class="term">C1</span><span class="def">Protecție discreționară, ierarhică, bazată pe drepturi de acces.</span></div>
+          <ol class="step-list good" style="margin-top:10px">
+            <li>Drepturi de acces acordate după moduri și grupuri de acces.</li>
+            <li>Prezența modulelor standard, adiționale și speciale.</li>
+            <li>Acces ierarhic la resurse.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <div class="row-def"><span class="term">C2</span><span class="def">Protecție controlată, protecție de integritate a datelor bazată pe înregistrarea accesărilor.</span></div>
+          <ol class="step-list good" style="margin-top:10px">
+            <li>Audit de evenimente de autentificare și acces.</li>
+          </ol>
+        </div>
+        <p class="note-small" style="margin-top:0;margin-bottom:12px">Clasa C trebuie neapărat să fie implicită, astfel încât să nu o poți opri.</p>
+      </div>
+
+      <div class="subsection">
+        <h3>Clasa B — MAC (Mandatory Access Control)</h3>
+        <p class="lead">Oferă o separare clară între entitățile sistemului de operare, precum și definește politici de control al accesului care clasifică datele și stabilesc nivelele de acces. Utilizatorii sunt separați în baza acestor politici. Include 3 nivele de protecție: B1, B2, B3.</p>
+        <p class="note-small" style="margin-top:0;margin-bottom:12px">Clasa B poate fi pornită/oprită, deci nu trebuie să fie implicită.</p>
+        <div class="card">
+          <div class="row-def"><span class="term">B1</span><span class="def">Protecție etichetată, non-ierarhică, bazată pe politici de acces.</span></div>
+          <ol class="step-list good" style="margin-top:10px">
+            <li><strong>Divizarea între entitățile sistemului</strong> — active (utilizatori/procese), pasive (fișiere/dispozitive), derivate (politicile de control al accesului).</li>
+            <li><strong>Etichete de securitate</strong> — la nivelul B1 nu toate entitățile au etichete. Etichete: confidențial/classified, secret, strict secret/top secret.</li>
+            <li><strong>Politicile de control de tipul MAC</strong> sunt bazate pe etichete.</li>
+            <li><strong>Acces non-ierarhic</strong> la resurse.</li>
+            <li><strong>Exportul controlat al informației</strong> — sistemul trebuie să prevină exportul necontrolat al informației clasificate. Dacă exportul este permis, se păstrează eticheta.</li>
+            <li><strong>Audit de bază</strong> al evenimentelor legate de etichete.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <div class="row-def"><span class="term">B2</span><span class="def">Protecție structurată, de integritate, bazată pe politici stricte, controale de securitate și înregistrarea tuturor activităților.</span></div>
+          <ol class="step-list good" style="margin-top:10px">
+            <li><strong>Separarea logică/fizică</strong> între componentele OS.</li>
+            <li><strong>Etichetele devin o parte integrată</strong> a sistemului.</li>
+            <li><strong>Auditul conține înregistrări ale evenimentelor de securitate:</strong> modificarea etichetelor, a politicilor, accesul la obiecte protejate, activitățile adminului de securitate, evenimente suspecte.</li>
+            <li><strong>Jurnalele de audit trebuie să fie:</strong> protejate împotriva modificării/ștergerii, separate de restul sistemului, revizuite periodic.</li>
+          </ol>
+        </div>
+        <div class="card">
+          <div class="row-def"><span class="term">B3</span><span class="def">Protecție pe domenii de securitate, de izolare a funcțiilor sistemului pe domenii și controale stricte asupra informației și a acțiunilor între domenii de securitate.</span></div>
+          <div class="dgm-wrap">
+            <figure class="dgm"><svg viewBox="0 0 200 250" role="img" aria-label="Două domenii de securitate izolate complet, fiecare cu propriul perimetru"><circle class="dg-ring" cx="100" cy="60" r="48"/><rect class="dg-core" x="90" y="62" width="20" height="16"/><polygon class="dg-core" points="90,62 100,48 110,62"/><line class="dg-flag" x1="100" y1="48" x2="100" y2="39"/><polygon class="dg-flag" points="100,39 108,42 100,45"/><text class="dg-txt" x="100" y="96">Domeniu 1</text><circle class="dg-ring" cx="100" cy="185" r="48"/><rect class="dg-core" x="90" y="187" width="20" height="16"/><polygon class="dg-core" points="90,187 100,173 110,187"/><line class="dg-flag" x1="100" y1="173" x2="100" y2="164"/><polygon class="dg-flag" points="100,164 108,167 100,170"/><text class="dg-txt" x="100" y="221">Domeniu 2</text><line class="dg-link" x1="100" y1="108" x2="100" y2="137"/><text class="dg-small" x="108" y="126">acces controlat</text><circle class="dg-dot" cx="100" cy="12" r="4"/><circle class="dg-dot" cx="52" cy="60" r="4"/><circle class="dg-dot" cx="148" cy="60" r="4"/><circle class="dg-dot" cx="100" cy="108" r="4"/><circle class="dg-dot" cx="100" cy="137" r="4"/><circle class="dg-dot" cx="52" cy="185" r="4"/><circle class="dg-dot" cx="148" cy="185" r="4"/><circle class="dg-dot" cx="100" cy="233" r="4"/></svg><figcaption>Punctul 1 — izolare completă: fiecare domeniu are perimetrul lui</figcaption></figure>
+            <figure class="dgm"><svg viewBox="0 0 260 250" role="img" aria-label="Domenii de securitate în inele concentrice, de la cel mai privilegiat în centru spre cele mai puțin privilegiate"><circle class="dg-ring" cx="130" cy="125" r="108"/><circle class="dg-ring" cx="130" cy="125" r="70"/><circle class="dg-ring" cx="130" cy="125" r="36"/><rect class="dg-core" x="120" y="127" width="20" height="16"/><polygon class="dg-core" points="120,127 130,113 140,127"/><line class="dg-flag" x1="130" y1="113" x2="130" y2="104"/><polygon class="dg-flag" points="130,104 138,107 130,110"/><text class="dg-num" x="154" y="168">1</text><text class="dg-num" x="183" y="129">2</text><text class="dg-num" x="219" y="129">3</text><circle class="dg-dot" cx="130" cy="89" r="4"/><circle class="dg-dot" cx="130" cy="161" r="4"/><circle class="dg-dot" cx="130" cy="55" r="4"/><circle class="dg-dot" cx="69" cy="160" r="4"/><circle class="dg-dot" cx="191" cy="160" r="4"/><circle class="dg-dot" cx="184" cy="32" r="4"/><circle class="dg-dot" cx="76" cy="32" r="4"/><circle class="dg-dot" cx="22" cy="125" r="4"/><circle class="dg-dot" cx="238" cy="125" r="4"/><circle class="dg-dot" cx="184" cy="219" r="4"/><circle class="dg-dot" cx="76" cy="219" r="4"/></svg><figcaption>Punctul 2 — domenii pe niveluri de privilegiu</figcaption></figure>
+          </div>
+          <ul class="plain" style="margin-bottom:12px">
+            <li><strong>Cercurile</strong> sunt domeniile de securitate; în interior stă componenta protejată (ex: kernelul, ca o fortăreață).</li>
+            <li><strong>Stânga:</strong> sistemul e împărțit în domenii complet separate. Un domeniu nu poate accesa direct altul; informația trece doar prin punctele marcate.</li>
+            <li><strong>Dreapta:</strong> domeniile sunt inele concentrice. <strong>1</strong> = domeniul privilegiat din centru (componentele esențiale, ex: kernel), <strong>2, 3</strong> = domenii tot mai puțin privilegiate (restul componentelor, ex: drivere). Cu cât ești mai departe de centru, cu atât ai mai puține drepturi.</li>
+            <li><strong>Punctele de pe cercuri</strong> sunt singurele locuri de interacțiune: orice trecere dintre domenii (informație sau acțiuni) trece printr-un punct controlat strict — de aici „controale stricte între domenii”.</li>
+            <li><strong>De ce reduce suprafața de atac:</strong> atacatorul din exterior ajunge întâi în inelele cu privilegii mici; ca să ajungă la kernel, trebuie să treacă prin fiecare punct de control.</li>
+          </ul>
+          <ol class="step-list good" style="margin-top:10px">
+            <li><strong>Izolează complet</strong> componentele sistemului în domenii de securitate separate.</li>
+            <li><strong>Reducerea suprafeței de atac</strong> — componentele esențiale rulează în domeniul privilegiat (ex: kernel); restul componentelor rulează în domenii mai puțin privilegiate (ex: drivere).</li>
+            <li><strong>Mecanisme de recuperare și rezistență la atac</strong> — recuperare după un atac detectat; rezistență la atacuri active; procesele dubioase nu pot modifica sau dezactiva mecanismele de securitate.</li>
+            <li><strong>Auditul include și evenimentele domeniilor</strong> — schimbări în domeniile de securitate, accesul între domenii, evenimente de securitate la nivel de kernel.</li>
+            <li><strong>Jurnalele de audit</strong> sunt stocate într-un domeniu protejat și nu pot fi șterse sau modificate de utilizatori neprivilegiați.</li>
+            <li><strong>Inițializare sigură și integritate la boot</strong> — inițializarea sigură și verificarea integrității componentelor și domeniilor; mecanismele de securitate sunt activate înainte de orice proces.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <h3>Clasa A — protecție verificată</h3>
+        <p class="lead">Această clasă oferă DAC/MAC integrat, fără posibilitatea de a dezactiva componentele de securitate. Politicile de control al accesului devin o parte integrată a sistemului. Oficial include 1 nivel de securitate.</p>
+        <div class="card">
+          <div class="row-def"><span class="term">A1</span><span class="def">Protecție structurală (de design).</span></div>
+          <ol class="step-list good" style="margin-top:10px">
+            <li>Proiectare orientată pe securitate.</li>
+            <li>Verificarea specificațiilor de securitate.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="section">
+      <h2>11. Managerii de bază ai sistemului de operare</h2>
+      <p class="bridge">După standardele de securizare, revenim în interiorul sistemului de operare: cine face munca (managerii) și cum e construit cel de resurse.</p>
+      <p class="lead">Sistemul de operare posedă 3 manageri de bază.</p>
+      <div class="card">
+        <ol class="step-list">
+          <li><strong>Managerul de resurse</strong> — al treilea.</li>
+          <li><strong>Managerul de sistem/procese</strong> — cel mai atacat.</li>
+          <li><strong>Managerul de pachete</strong> — al doilea cel mai atacat.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <div class="row-def"><span class="term">Pornire</span><span class="def">Managerul de resurse și cel de sistem se pornesc în mod implicit. Managerul de pachete se pornește la necesitate.</span></div>
+      </div>
+
+      <div class="subsection">
+        <h3>Managerul de resurse</h3>
+        <p class="lead">Se clasifică după forma și locația componentelor adiționale. Este construit din mai multe sub-sisteme, mai mult sau mai puțin interdependente.</p>
+        <p class="note-small" style="margin-top:0;margin-bottom:12px">Alte principii constructive nu există — sunt forme arhitecturale și modele structurale.</p>
+        <p class="lead"><strong>Modelele constructive:</strong></p>
+        <div class="chips" style="flex-wrap:wrap">
+          <span class="chip">Bloc</span>
+          <span class="chip">Client-server</span>
+          <span class="chip">Virtualizat</span>
+        </div>
+        <div class="card">
+          <div class="row-def"><span class="term">Bloc</span><span class="def">Rapid, consumă puține resurse, ușor de programat. <strong>Dezavantaj:</strong> componentele sunt interlegate — cade o componentă ⇒ cade tot sistemul.</span></div>
+        </div>
+        <div class="card">
+          <div class="row-def"><span class="term">Client-server</span><span class="def">Componentele sunt legate prin IPC (inter-process communication), prin API. <strong>Dezavantaje:</strong> mai lent, mai multe resurse, mai greu de programat.</span></div>
+        </div>
+        <div class="card">
+          <div class="row-def"><span class="term">Virtualizat</span><span class="def">Zero dependențe de alte procese, foarte rapid, consumă puține resurse. <strong>Dezavantaj:</strong> greu de programat.</span></div>
+        </div>
+      </div>
     </div>
 
     <div class="section">
@@ -798,7 +993,7 @@
       <div class="flow-arrow">↓</div>
       <div class="flow-node"><span class="flow-label">7 · Prevenție</span><span class="flow-title">Principii + cele 7 modalități de securizare — ce faci înainte, ca să nu mai ajungi la pasul 6</span></div>
       <div class="flow-arrow">↓</div>
-      <div class="flow-node"><span class="flow-label">8 · Aplicare în practică</span><span class="flow-title">Securitatea în sisteme de operare — principiile devin măsuri concrete: fără memory leak, utilizatori și procese izolate, acces controlat prin extensii de securitate; standardele de securizare (EC, TCSEC, EAL4) diferă de la țară la țară</span></div>
+      <div class="flow-node"><span class="flow-label">8 · Aplicare în practică</span><span class="flow-title">Securitatea în sisteme de operare — principiile devin măsuri concrete: fără memory leak, utilizatori și procese izolate, acces controlat prin extensii de securitate; standardele de securizare (EC, TCSEC, EAL4) diferă de la țară la țară; TCSEC împarte securitatea în clasele D, C (DAC), B (MAC), A; sistemul de operare are 3 manageri de bază</span></div>
       <p class="flow-closing">Practic: pașii 3–4 sunt „rețeta” atacatorului; pasul 7 e aceeași rețetă, aplicată invers, de cei care apără sistemul — ca să protejeze exact cei trei piloni de la pasul 1.</p>
       </div>
       </div>
@@ -818,7 +1013,7 @@
     <div class="quiz-layout">
       <div class="quiz-main-column">
         <div class="score-bar">
-          <span id="score-display">Scor: 0 din 79</span>
+          <span id="score-display">Scor: 0 din 115</span>
           <div class="score-actions">
             <button class="section-nav-toggle" id="section-nav-toggle" type="button" aria-expanded="false" aria-controls="section-nav" onclick="toggleSectionNav(true)">☷ Compartimente</button>
             <button class="reset-btn" onclick="resetQuiz()">Reia testul</button>
@@ -938,6 +1133,42 @@
     {s:"Standardele de securizare", q:"Cum se diferențiază standardele de securitate în lumea IT, conform notițelor?", o:["Nu se diferențiază, sunt identice peste tot","De la țară la țară","Doar în funcție de mărimea companiei","Doar în funcție de sistemul de operare"], c:1},
     {s:"Standardele de securizare", q:"Care dintre următoarele este menționat în notițe ca standard de securitate?", o:["TCSEC","KISS","SELinux","cgroups"], c:0},
     {s:"Standardele de securizare", q:"Cum este descris standardul EC în notițe?", o:["Extensie de securitate pentru Linux","Tehnică de izolare a proceselor","Standard internațional","Standard valabil într-o singură țară"], c:2},
+    {s:"Standardele de securizare", q:"Ce înseamnă TCSEC?", o:["Total Cyber Security Evaluation Code","Trusted Computer System Evaluation Criteria","Technical Control System for Encrypted Communication","Trusted Cryptographic Standard for Enterprise Computing"], c:1},
+    {s:"Standardele de securizare", q:"Câte nivele (oficial) are TCSEC și în câte clase de securizare sunt împărțite?", o:["7 nivele, împărțite în 7 clase","7 nivele, împărțite în 4 clase","3 nivele, împărțite în 3 clase","4 nivele, împărțite în 7 clase"], c:1},
+    {s:"Standardele de securizare", q:"După ce se divid clasele de securizare TCSEC?", o:["După țara în care sunt aprobate","După sistemul de operare folosit","După numărul de utilizatori","După criteriile de acces"], c:3},
+    {s:"Standardele de securizare", q:"Ce presupune clasa D din TCSEC?", o:["Protecție verificată","Lipsa unui mod specializat de acces","Protecție de tip MAC","Protecție de tip DAC"], c:1},
+    {s:"Standardele de securizare", q:"Ce tip de protecție oferă clasa C?", o:["Doar criptare a datelor","DAC (Discretionary Access Control)","Nicio protecție","MAC (Mandatory Access Control)"], c:1},
+    {s:"Standardele de securizare", q:"Ce nivele include clasa C?", o:["C1 și C2","C1, C2 și C3","Doar C1","B1, B2 și B3"], c:0},
+    {s:"Standardele de securizare", q:"Cum este descris nivelul C1?", o:["Protecție pe domenii de securitate","Protecție structurată, de integritate","Protecție etichetată, non-ierarhică","Protecție discreționară, ierarhică, bazată pe drepturi de acces"], c:3},
+    {s:"Standardele de securizare", q:"Pe ce se bazează protecția controlată de la nivelul C2?", o:["Pe verificarea specificațiilor de securitate","Pe etichetele de securitate","Pe înregistrarea accesărilor (audit de evenimente de autentificare și acces)","Pe izolarea completă în domenii de securitate"], c:2},
+    {s:"Standardele de securizare", q:"Ce se spune în notițe despre clasa de securizare C?", o:["Trebuie să fie implicită, astfel încât să nu o poți opri","Se aplică doar serverelor","Nu are niciun nivel","Poate fi pornită sau oprită după dorință"], c:0},
+    {s:"Standardele de securizare", q:"Ce tip de protecție oferă clasa B?", o:["MAC (Mandatory Access Control)","DAC (Discretionary Access Control)","Lipsa unui mod specializat de acces","Protecție structurală de design"], c:0},
+    {s:"Standardele de securizare", q:"Câte nivele de protecție include clasa B?", o:["4","1","2","3"], c:3},
+    {s:"Standardele de securizare", q:"Ce se spune în notițe despre clasa B?", o:["Poate fi pornită/oprită, deci nu trebuie să fie implicită","Trebuie să fie implicită","Nu poate fi oprită niciodată","Include un singur nivel"], c:0},
+    {s:"Standardele de securizare", q:"Cum este descris nivelul B1?", o:["Protecție etichetată, non-ierarhică, bazată pe politici de acces","Protecție pe domenii de securitate","Protecție discreționară, ierarhică","Protecție verificată"], c:0},
+    {s:"Standardele de securizare", q:"Cum sunt împărțite entitățile sistemului la nivelul B1?", o:["Primare, secundare și terțiare","Active, pasive și derivate","Interne, externe și mixte","Publice, private și ascunse"], c:1},
+    {s:"Standardele de securizare", q:"Ce se întâmplă la B1 cu eticheta informației clasificate al cărei export este permis?", o:["Se șterge eticheta","Eticheta se criptează","Eticheta se înlocuiește cu „public”","Se păstrează eticheta"], c:3},
+    {s:"Standardele de securizare", q:"Cum este descris nivelul B2?", o:["Protecție structurală (de design)","Protecție discreționară, ierarhică","Protecție structurată, de integritate, bazată pe politici stricte și înregistrarea tuturor activităților","Protecție etichetată, non-ierarhică"], c:2},
+    {s:"Standardele de securizare", q:"Cum trebuie să fie jurnalele de audit la nivelul B2?", o:["Protejate împotriva modificării/ștergerii, separate de restul sistemului și revizuite periodic","Șterse automat periodic","Publice și editabile de orice utilizator","Stocate în același domeniu cu aplicațiile"], c:0},
+    {s:"Standardele de securizare", q:"Pe ce se bazează protecția de la nivelul B3?", o:["Pe domenii de securitate (izolarea funcțiilor sistemului pe domenii)","Pe drepturi de acces ierarhice","Pe etichete non-ierarhice","Pe înregistrarea accesărilor"], c:0},
+    {s:"Standardele de securizare", q:"Cum se reduce suprafața de atac la nivelul B3?", o:["Driverele rulează în același domeniu cu kernelul","Se dezactivează toate driverele","Componentele esențiale (ex: kernel) rulează în domeniul privilegiat, iar restul (ex: drivere) în domenii mai puțin privilegiate","Toate componentele rulează în domeniul privilegiat"], c:2},
+    {s:"Standardele de securizare", q:"Când sunt activate mecanismele de securitate la B3 (inițializare sigură)?", o:["La cererea administratorului","Doar la oprirea sistemului","După pornirea aplicațiilor","Înainte de orice proces"], c:3},
+    {s:"Standardele de securizare", q:"Ce oferă clasa A (protecție verificată)?", o:["Doar audit de bază","DAC/MAC integrat, fără posibilitatea de a dezactiva componentele de securitate","Lipsa unui mod specializat de acces","Doar DAC"], c:1},
+    {s:"Standardele de securizare", q:"Câte nivele include oficial clasa A?", o:["1","3","4","2"], c:0},
+    {s:"Standardele de securizare", q:"Ce presupune nivelul A1?", o:["Audit de evenimente de autentificare","Etichete de securitate non-ierarhice","Proiectare orientată pe securitate și verificarea specificațiilor de securitate","Separarea rudimentară a utilizatorilor"], c:2},
+    {s:"Managerii de bază ai SO", q:"Câți manageri de bază posedă sistemul de operare, conform notițelor?", o:["2","5","3","4"], c:2},
+    {s:"Managerii de bază ai SO", q:"Care manager este cel mai atacat?", o:["Managerul de resurse","Managerul de sistem/procese","Managerul de pachete","Toți sunt atacați la fel"], c:1},
+    {s:"Managerii de bază ai SO", q:"Care manager este al doilea cel mai atacat?", o:["Managerul de resurse","Managerul de sistem/procese","Managerul de pachete","Niciunul nu este atacat"], c:2},
+    {s:"Managerii de bază ai SO", q:"Care manageri se pornesc în mod implicit?", o:["Niciunul","Managerul de resurse și managerul de sistem","Managerul de pachete și cel de resurse","Doar managerul de pachete"], c:1},
+    {s:"Managerii de bază ai SO", q:"Când se pornește managerul de pachete?", o:["La necesitate","Mereu, în mod implicit","Doar la boot","Niciodată"], c:0},
+    {s:"Managerii de bază ai SO", q:"După ce se clasifică managerul de resurse?", o:["După numărul de utilizatori","După țara de origine","După viteza procesorului","După forma și locația componentelor adiționale"], c:3},
+    {s:"Managerii de bază ai SO", q:"Care sunt modelele constructive ale managerului de resurse?", o:["Static, Dinamic, Mixt","Monolit, Serial, Paralel","Bloc, Cloud, Hibrid","Bloc, Client-server, Virtualizat"], c:3},
+    {s:"Managerii de bază ai SO", q:"Care model este rapid, consumă puține resurse și e ușor de programat, dar are componente interlegate?", o:["Client-server","Bloc","Niciunul dintre ele","Virtualizat"], c:1},
+    {s:"Managerii de bază ai SO", q:"Ce se întâmplă în modelul Bloc dacă o componentă cade?", o:["Sistemul repornește doar componenta","Nu se întâmplă nimic","Cade doar acea componentă","Cade tot sistemul"], c:3},
+    {s:"Managerii de bază ai SO", q:"Cum sunt legate componentele în modelul Client-server?", o:["Prin memorie comună nelimitată","Nu sunt legate între ele","Prin același proces","Prin IPC (inter-process communication), prin API"], c:3},
+    {s:"Managerii de bază ai SO", q:"Care sunt dezavantajele modelului Client-server?", o:["Nu are dezavantaje","Mai lent, mai multe resurse, mai greu de programat","Componente interlegate","Zero dependențe, dar prea rapid"], c:1},
+    {s:"Managerii de bază ai SO", q:"Care model are zero dependențe de alte procese și este foarte rapid?", o:["Bloc","Virtualizat","Niciunul dintre ele","Client-server"], c:1},
+    {s:"Managerii de bază ai SO", q:"Care este dezavantajul modelului Virtualizat?", o:["Cade tot sistemul când cade o componentă","Este foarte lent","Este greu de programat","Consumă multe resurse"], c:2},
     {s:"Sinteză — SO și principiile generale", q:"Principiul „Enforce least privilege” din cele 7 modalități de securizare se leagă cel mai direct de ce măsură la nivelul sistemului de operare?", o:["Controlul accesului — limitarea privilegiilor utilizatorilor","Excluderea memory leak","Criptarea conținutului de stocare","Standardul TCSEC"], c:0}
   ];
 
@@ -945,13 +1176,22 @@
 
   function loadState() {
     try {
-      const raw = localStorage.getItem('secinfo-quiz-state-v2');
-      state = raw ? JSON.parse(raw) : {};
+      const raw = localStorage.getItem('secinfo-quiz-state-v3');
+      if (raw) { state = JSON.parse(raw); return; }
+      // migrare din v2: întrebarea de sinteză (ultima) a fost mutată după întrebările noi
+      const old = localStorage.getItem('secinfo-quiz-state-v2');
+      state = old ? JSON.parse(old) : {};
+      const OLD_LAST = 78;
+      if (state[OLD_LAST] !== undefined) {
+        state[quizData.length - 1] = state[OLD_LAST];
+        delete state[OLD_LAST];
+      }
+      saveState();
     } catch (e) { state = {}; }
   }
 
   function saveState() {
-    try { localStorage.setItem('secinfo-quiz-state-v2', JSON.stringify(state)); } catch (e) {}
+    try { localStorage.setItem('secinfo-quiz-state-v3', JSON.stringify(state)); } catch (e) {}
   }
 
   function renderQuiz() {
@@ -1110,7 +1350,7 @@
   }
 
   function initBridges() {
-    document.querySelectorAll('.section h2').forEach(h => {
+    document.querySelectorAll('.section h2, .subsection h3').forEach(h => {
       const b = h.nextElementSibling;
       if (!b || !b.classList.contains('bridge')) return;
       h.classList.add('toggle');
